@@ -2,116 +2,80 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NEBULA-X | OS INTEL</title>
+    <title>NEBULA-X | IMMERSIVE INTERFACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500;700&display=swap');
-        body { background: #020202; color: #00ffcc; font-family: 'Fira Code', monospace; overflow-x: hidden; }
-        .cyber-card { border: 1px solid #00ffcc33; background: rgba(0, 255, 204, 0.03); backdrop-filter: blur(10px); transition: 0.3s; }
-        .cyber-card:hover { border-color: #00ffcc; box-shadow: 0 0 20px #00ffcc33; }
-        .glitch { animation: glitch 1s linear infinite; }
-        @keyframes glitch { 2%, 64% { transform: translate(2px,0) skew(0deg); } 4%, 60% { transform: translate(-2px,0) skew(0deg); } 62% { transform: translate(0,0) skew(5deg); } }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.15; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
+        body { margin: 0; padding: 0; background-color: #000; color: #00ffcc; font-family: 'Orbitron', sans-serif; overflow: hidden; }
+        #vanta-bg { position: fixed; width: 100%; height: 100%; z-index: -1; }
+        .glass { background: rgba(0, 20, 20, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 2px; }
+        .scanline { width: 100%; height: 2px; background: rgba(0, 255, 204, 0.1); position: absolute; animation: scan 4s linear infinite; }
+        @keyframes scan { from { top: 0; } to { top: 100%; } }
+        .audio-control { position: fixed; bottom: 20px; right: 20px; cursor: pointer; border: 1px solid #0f0; padding: 10px; font-size: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <canvas id="matrix"></canvas>
+<body>
+    <div id="vanta-bg"></div>
+    <div class="scanline"></div>
 
-    <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-12 border-b border-cyan-900 pb-6">
-            <div>
-                <h1 class="text-4xl font-black tracking-tighter glitch">NEBULA-X <span class="text-white font-light">ELITE</span></h1>
-                <p class="text-[10px] text-cyan-700 tracking-[0.5em] uppercase">Advanced Network Stress System v2.0.26</p>
-            </div>
-            <div class="text-right">
-                <div class="text-xs text-cyan-500">SYSTEM STATUS: <span class="text-green-500 font-bold">OPERATIONAL</span></div>
-                <div class="text-[10px] text-gray-500">ID: JULES-251-GAMMING</div>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-1 space-y-6">
-                <div class="cyber-card p-6">
-                    <h3 class="text-sm font-bold mb-4 border-l-2 border-cyan-500 pl-2">VORTEX ENGINE STATS</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <div class="flex justify-between text-[10px] mb-1"><span>POWER OUTPUT</span><span>98%</span></div>
-                            <div class="w-full bg-cyan-900 h-1"><div class="bg-cyan-400 h-1 w-[98%] shadow-[0_0_10px_#00ffcc]"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-[10px] mb-1"><span>PROXY BUFFER</span><span>38,402 IPs</span></div>
-                            <div class="w-full bg-cyan-900 h-1"><div class="bg-cyan-400 h-1 w-[75%] shadow-[0_0_10px_#00ffcc]"></div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cyber-card p-6 border-red-900/30">
-                    <h3 class="text-sm font-bold mb-4 border-l-2 border-red-500 pl-2 text-red-500">SECURITY PROTOCOL</h3>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">
-                        Chiffrement local <span class="text-white">SHA-256</span> activé. 
-                        Accès restreint via clé de session persistante .config .
-                    </p>
-                </div>
+    <div class="flex flex-col items-center justify-center h-screen relative z-10">
+        <div class="glass p-12 text-center max-w-3xl transform hover:scale-105 transition-all duration-700">
+            <h1 class="text-7xl font-black mb-2 tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-white to-cyan-500">NEBULA-X</h1>
+            <p class="text-cyan-400 text-xs tracking-[1em] mb-8 uppercase">Neural Intelligence Interface</p>
+            
+            <div class="grid grid-cols-3 gap-8 text-[10px] uppercase border-t border-cyan-900 pt-8">
+                <div class="hover:text-white transition">Core Status: Stable</div>
+                <div class="hover:text-white transition italic">Location: Encrypted</div>
+                <div class="hover:text-white transition">Active Nodes: 38K</div>
             </div>
 
-            <div class="lg:col-span-2 space-y-6">
-                <div class="cyber-card p-4 h-64 overflow-hidden relative">
-                    <div class="absolute top-2 right-4 text-[10px] text-cyan-800 italic">LIVE_LOGS</div>
-                    <div id="terminal" class="text-[11px] text-cyan-400 space-y-1">
-                        <div>> Initializing NEBULA-X ELITE...</div>
-                        <div>> Connection established with local database.</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="cyber-card p-4 hover:bg-cyan-500/10 cursor-pointer">
-                        <div class="text-xs font-bold mb-1">[01] RECONNAISSANCE</div>
-                        <div class="text-[10px] text-gray-500 italic">Scan, Whois, Geo-IP</div>
-                    </div>
-                    <div class="cyber-card p-4 hover:bg-red-500/10 cursor-pointer">
-                        <div class="text-xs font-bold mb-1 text-red-400">[02] STRESS TEST</div>
-                        <div class="text-[10px] text-gray-500 italic">UDP Vortex, Port Scan</div>
-                    </div>
-                </div>
-            </div>
+            <button onclick="toggleAudio()" class="mt-10 px-8 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-bold uppercase text-xs tracking-widest">
+                Initialize System
+            </button>
         </div>
     </div>
 
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="audio-control glass" onclick="toggleAudio()">AUDIO: <span id="audio-status">OFF</span></div>
+
     <script>
-        // Matrix Background
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const letters = "01"; const fontSize = 14; const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-        function draw() {
-            ctx.fillStyle = "rgba(2, 2, 2, 0.1)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#00ffcc"; ctx.font = fontSize + "px monospace";
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
+        // Initialisation de la 3D (Vanta Net)
+        VANTA.NET({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x00ffcc,
+            backgroundColor: 0x000,
+            points: 12.00,
+            maxDistance: 22.00,
+            spacing: 16.00
+        })
+
+        // Gestion de l'audio
+        const music = document.getElementById('bg-music');
+        const statusText = document.getElementById('audio-status');
+        
+        function toggleAudio() {
+            if (music.paused) {
+                music.play();
+                statusText.innerText = "ON";
+                statusText.style.color = "#0f0";
+            } else {
+                music.pause();
+                statusText.innerText = "OFF";
+                statusText.style.color = "#f00";
             }
         }
-        setInterval(draw, 35);
-
-        // Fake Terminal
-        const logs = [
-            "Analyzing subnet 192.168.1.0/24...",
-            "Vortex Engine: Thread #254 spawned successfully.",
-            "Proxy buffer refreshed: 402 new nodes added.",
-            "SHA-256 integrity check: OK",
-            "Warning: Heavy traffic detected on port 80.",
-            "Bypassing firewall filters... Success."
-        ];
-        const terminal = document.getElementById('terminal');
-        setInterval(() => {
-            const line = document.createElement('div');
-            line.innerHTML = `> ${logs[Math.floor(Math.random() * logs.length)]}`;
-            terminal.appendChild(line);
-            if (terminal.childNodes.length > 12) terminal.removeChild(terminal.firstChild);
-        }, 2000);
     </script>
 </body>
 </html>
