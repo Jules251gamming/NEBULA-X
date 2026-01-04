@@ -1,156 +1,171 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NX-7721 | Rapport d'Audit Technique</title>
+    <title>NEBULA-X | Elite Network Auditing</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #010101; font-family: 'Fira Code', monospace; color: #94a3b8; overflow-x: hidden; }
+        :root { --cyan-neon: #22d3ee; --dark-bg: #010101; }
+        body { background-color: var(--dark-bg); font-family: 'Fira Code', monospace; color: #fff; overflow-x: hidden; }
         .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: 0; pointer-events: none; }
-        .glass-panel { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-blur: 10px; }
-        .highlight { color: #22d3ee; text-shadow: 0 0 10px rgba(34, 211, 238, 0.3); }
-        .code-inline { background: rgba(0, 0, 0, 0.5); padding: 2px 6px; border-radius: 4px; color: #4ade80; font-size: 0.9em; }
-        h2 { color: #fff; border-left: 3px solid #22d3ee; padding-left: 15px; margin-top: 60px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
-        p { margin-bottom: 20px; line-height: 1.8; text-align: justify; }
+        .cyber-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .cyber-card:hover { border-color: var(--cyan-neon); background: rgba(34, 211, 238, 0.05); }
+        .neon-text { text-shadow: 0 0 10px var(--cyan-neon); color: var(--cyan-neon); }
+        body.modal-open { overflow: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--cyan-neon); }
     </style>
 </head>
-<body>
+<body class="modal-open">
 
     <canvas id="matrix" class="matrix-bg"></canvas>
 
-    <nav class="fixed w-full z-50 px-6 py-6 flex justify-between items-center backdrop-blur-md border-b border-white/5">
-        <a href="index.html" class="font-bold text-xl tracking-tighter text-cyan-500 italic hover:scale-105 transition-transform">← NEBULA-X</a>
-        <div class="text-[9px] uppercase tracking-[0.3em] opacity-40 italic hidden md:block">Security Protocol: NX-7721-AUDIT</div>
-    </nav>
-
-    <div class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-20">
-        
-        <header class="mb-20" data-aos="fade-down">
-            <h1 class="text-4xl md:text-6xl font-black text-white italic mb-4">RAPPORT D'AUDIT <span class="highlight">NX-7721</span></h1>
-            <p class="text-[10px] tracking-[0.5em] text-cyan-500 uppercase font-bold mb-10">Analyse Comparative & Justification de l'Intégrité Binaire</p>
-            <div class="flex flex-wrap gap-4 opacity-50 text-[10px]">
-                <span class="border border-white/20 px-3 py-1">DATE: 04.01.2026</span>
-                <span class="border border-white/20 px-3 py-1">BUILD: 2.0.4-ELITE</span>
-                <span class="border border-white/20 px-3 py-1 text-green-500">STATUS: VERIFIED CLEAN</span>
+    <div id="legal-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/98 backdrop-blur-xl px-4">
+        <div class="max-w-lg w-full cyber-card p-8 border-cyan-500/50 shadow-[0_0_60px_rgba(34,211,238,0.2)]">
+            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase tracking-tighter">Accès Restreint</h2>
+            <div class="space-y-4 text-gray-400 text-[10px] leading-relaxed font-mono mb-8 border-l-2 border-cyan-500/30 pl-4">
+                <p><span class="text-white font-bold underline">ALERTE :</span> Vous entrez dans un environnement d'audit réseau.</p>
+                <p><span class="text-white font-bold underline">RESPONSABILITÉ :</span> En cliquant sur accepter, vous certifiez être propriétaire de la cible ou avoir l'autorisation d'audit. L'administrateur décline toute responsabilité.</p>
             </div>
-        </header>
-
-        <div class="glass-panel p-8 md:p-12 rounded-2xl shadow-2xl" data-aos="fade-up">
-            
-            <section id="methode">
-                <h2>01. Préambule et Méthodologie</h2>
-                <p>Ce rapport détaille les spécifications architecturales de l'exécutable <span class="highlight">tiger.exe</span> (NebulaX_Elite.exe). Développé sur une période de 12 semaines (Novembre 2025 - Janvier 2026), cet outil représente une avancée majeure dans les tests de charge réseau asynchrones.</p>
-                <p>Notre méthodologie d'audit repose sur trois piliers : l'analyse de l'entropie binaire, la vérification des appels système (<span class="code-inline">Syscalls</span>) et l'examen de la persistance mémoire. Ce document est destiné aux administrateurs réseau et aux ingénieurs en cybersécurité pour justifier le score de <span class="highlight">2/72</span> observé sur VirusTotal.</p>
-            </section>
-
-            <section id="architecture">
-                <h2>02. Architecture du Compilateur Golang v1.21</h2>
-                <p>Nebula-X est compilé à l'aide de la chaîne de production <span class="highlight">Go 1.21.x</span>. Contrairement aux binaires générés par C++ ou .NET, Go utilise une architecture de liaison statique (Static Linking). Cela signifie que le binaire final contient non seulement le code source, mais aussi le <span class="code-inline">Runtime Go</span>, le Garbage Collector, et le gestionnaire de Goroutines.</p>
-                <div class="bg-black/30 border-l-2 border-yellow-500/50 p-6 my-8 italic text-sm">
-                    <span class="text-yellow-500 font-bold tracking-widest uppercase text-[10px] block mb-2">Note sur l'analyse Antivirus :</span>
-                    La majorité des antivirus classiques scannent les tables d'importation DLL. Un binaire Go possède une table d'importation réduite (limitée à <span class="code-inline">kernel32.dll</span>). Pour un moteur comme <span class="highlight">Bkav</span>, cette structure "opaque" est systématiquement classée comme suspecte car elle ressemble à la méthode d'auto-conteneurisation utilisée par certains Trojans.
-                </div>
-            </section>
-
-            <section id="sockets">
-                <h2>03. Implémentation des Raw Sockets & IP-Spoofing</h2>
-                <p>Le cœur de Nebula-X repose sur l'utilisation des <span class="highlight">Raw Sockets</span>. Pour atteindre les performances requises lors d'un audit de charge de couche 4 (L4), il est impératif d'outrepasser les couches d'abstraction de l'API Windows Sockets (Winsock).</p>
-                <div class="bg-black/50 p-6 rounded-lg border border-white/5 my-8">
-                    <code class="text-[11px] leading-relaxed block text-cyan-400">
-                        // Module de forgeage de paquets<br>
-                        fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_RAW, syscall.IPPROTO_RAW)<br>
-                        if err != nil { log.Fatalf("Socket Init Error: %v", err) }<br>
-                        // Activation du flag IP_HDRINCL<br>
-                        err = syscall.SetsockoptInt(fd, syscall.IPPROTO_IP, syscall.IP_HDRINCL, 1)
-                    </code>
-                </div>
-                <p>L'appel système <span class="code-inline">IPPROTO_RAW</span> est strictement surveillé par Microsoft. Un binaire demandant ce privilège sans certificat de signature EV est automatiquement flaggé comme <span class="text-red-500 font-bold uppercase text-xs tracking-widest">Riskware/HackTool</span>. C'est la raison précise de la détection <span class="highlight font-bold">W64.AIDetectMalware</span> par Bkav Pro.</p>
-            </section>
-
-            <section id="entropie">
-                <h2>04. Analyse de l'Entropie et des LD Flags</h2>
-                <p>Le second flag détecté (<span class="highlight">Skyhigh SWG</span>) concerne le comportement "VBObfus". Il s'agit d'une erreur d'interprétation de l'entropie du fichier. Nous utilisons les arguments de liaison suivants pour optimiser le binaire : <span class="code-inline">-ldflags="-s -w"</span>.</p>
-                <ul class="list-disc ml-6 space-y-4 text-sm mb-10">
-                    <li><span class="text-white font-bold">Flag -s :</span> Supprime la table des symboles. Cela rend le reverse-engineering humain plus complexe mais réduit la taille du fichier.</li>
-                    <li><span class="text-white font-bold">Flag -w :</span> Supprime les informations de débogage DWARF. Cela augmente l'entropie binaire (densité des octets).</li>
-                </ul>
-                <p>Pour un algorithme de détection basé sur les probabilités, un binaire dense sans table de symboles est statistiquement équivalent à un binaire offusqué. Or, ici, il s'agit d'une optimisation pour réduire la latence lors de l'exécution en RAM.</p>
-            </section>
-
-            <section id="comparaison">
-                <h2>05. Comparaison des Moteurs (Audit Final)</h2>
-                <div class="overflow-x-auto my-10">
-                    <table class="w-full text-left text-[11px] border-collapse border border-white/5">
-                        <thead>
-                            <tr class="bg-white/5 text-cyan-500 uppercase tracking-widest">
-                                <th class="p-4">Vendor</th>
-                                <th class="p-4">Verdict</th>
-                                <th class="p-4">Technologie</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-400">
-                            <tr class="border-b border-white/5">
-                                <td class="p-4 text-white font-bold">Kaspersky</td>
-                                <td class="p-4 text-green-500 font-black">CLEAN</td>
-                                <td class="p-4">Signature-based (Verify)</td>
-                            </tr>
-                            <tr class="border-b border-white/5">
-                                <td class="p-4 text-white font-bold">MS Defender</td>
-                                <td class="p-4 text-green-500 font-black">CLEAN</td>
-                                <td class="p-4">Cloud Sandbox (Verify)</td>
-                            </tr>
-                            <tr class="border-b border-white/5">
-                                <td class="p-4 text-white font-bold">Bkav Pro</td>
-                                <td class="p-4 text-red-500">DETECTED</td>
-                                <td class="p-4 italic">Heuristic AI (False Positive)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section class="mt-20 pt-10 border-t border-cyan-500/20">
-                <p class="italic opacity-60 text-sm">Ce rapport de 1240 lignes d'analyse conclut à la sécurité totale du binaire. L'intégrité peut être vérifiée via le hash SHA-256 officiel :</p>
-                <div class="bg-cyan-500/5 p-4 rounded font-bold text-cyan-400 text-[10px] break-all border border-cyan-500/20">
-                    79F09831DF13C974778FDD9F475A0D6868D86E9FDC039C1095D29BA5CE080452
-                </div>
-            </section>
+            <button onclick="acceptTerms()" class="w-full py-4 bg-cyan-500 text-black font-black uppercase tracking-widest hover:bg-white transition-all text-[10px]">
+                ACCEPTER ET CONTINUER
+            </button>
         </div>
-
-        <footer class="mt-20 text-center opacity-20 text-[9px] uppercase tracking-[0.5em]">
-            Nebula-X Intelligence Lab &copy; MMXXVI
-        </footer>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 1000, once: true });
+    <section class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
+        <div class="text-center mb-12">
+            <h1 class="text-6xl md:text-8xl font-black italic neon-text tracking-tighter">NEBULA<span class="text-white">-X</span></h1>
+            <p class="text-[9px] text-gray-500 uppercase tracking-[1em] opacity-50 mt-2">Professional Cloud Auditing Infrastructure</p>
+        </div>
+        
+        <div class="max-w-5xl w-full grid md:grid-cols-3 gap-6">
+            <div class="cyber-card p-6 border-t-2 border-cyan-500/50">
+                <h3 class="text-white font-bold mb-6 uppercase text-[9px] tracking-widest">Target Config</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[8px] text-gray-500 mb-2 uppercase font-bold italic">Endpoint (IP/Domain)</label>
+                        <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-3 rounded text-cyan-400 text-xs outline-none focus:border-cyan-500 transition-all">
+                    </div>
+                    <button id="btn-test" onclick="runRealAudit()" class="w-full py-4 bg-cyan-500 text-black font-black text-[10px] uppercase tracking-tighter hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
+                        LANCER L'AUDIT
+                    </button>
+                </div>
+            </div>
 
-        // MATRIX BACKGROUND (Identique à l'index pour la fusion)
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const chars = "01NEBULAX7721";
-        const fontSize = 12;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(1, 1, 1, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#22d3ee";
-            ctx.font = fontSize + "px monospace";
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            <div class="md:col-span-2 cyber-card bg-black/90 rounded-lg overflow-hidden border border-cyan-500/20 shadow-2xl">
+                <div class="bg-white/5 px-4 py-2 flex justify-between items-center border-b border-white/5">
+                    <span class="text-[8px] text-cyan-500 font-bold uppercase tracking-widest italic animate-pulse">Master Node: Nebula-X-8zga</span>
+                    <div class="flex gap-1.5">
+                        <div class="w-2 h-2 rounded-full bg-red-500/20"></div>
+                        <div class="w-2 h-2 rounded-full bg-yellow-500/20"></div>
+                        <div class="w-2 h-2 rounded-full bg-green-500/20"></div>
+                    </div>
+                </div>
+                <div id="terminal-output" class="p-6 h-72 overflow-y-auto font-mono text-[10px] space-y-1">
+                    <div class="text-gray-600">> Système prêt. En attente de cible...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 max-w-4xl w-full grid md:grid-cols-2 gap-8 items-center border-t border-white/5 pt-8">
+            <div class="text-left">
+                <h4 class="text-cyan-500 font-bold uppercase text-[10px] mb-2">Analyse de Sécurité (NX-7721)</h4>
+                <p class="text-gray-500 text-[9px] leading-relaxed mb-2">
+                    Score VirusTotal : <span class="text-green-500">2/72 (Vérifié Clean)</span>. Détections liées aux Raw Sockets.
+                </p>
+                <a href="detection.html" class="text-cyan-400 text-[9px] underline hover:text-white transition-all uppercase font-bold">Consulter le rapport technique complet</a>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-4 italic">Accès 100% Power (Flood L7 / Port Scan) :</p>
+                <a href="./nebula-x.exe" download class="inline-block px-12 py-4 border-2 border-white text-white font-black text-[10px] uppercase hover:bg-cyan-500 hover:text-black transition-all">
+                    TÉLÉCHARGER NEBULA-X.EXE
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // MATRIX EFFECT
+        const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
+        canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+        const drops=Array(Math.floor(canvas.width/14)).fill(1);
+        function drawMatrix(){
+            ctx.fillStyle="rgba(1,1,1,0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="#22d3ee"; ctx.font="14px monospace";
+            drops.forEach((y,i)=>{
+                const text="01"[Math.floor(Math.random()*2)];
+                ctx.fillText(text,i*14,y*14);
+                if(y*14>canvas.height && Math.random()>0.975) drops[i]=0;
                 drops[i]++;
-            }
+            });
         }
         setInterval(drawMatrix, 50);
+
+        function acceptTerms() {
+            document.getElementById('legal-modal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        // AUDIT LOGIC
+        (function(){
+            const _0x1a2b=['\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6E\x65\x62\x75\x6C\x61\x2D\x78\x2D\x38\x72\x67\x61\x2E\x6F\x6E\x72\x65\x6E\x64\x65\x72\x2E\x63\x6F\x6D\x2F\x61\x70\x69\x2F\x64\x69\x61\x67\x6E\x6F\x73\x74\x69\x63'];
+            
+            window.runRealAudit = async function() {
+                let targetInput = document.getElementById('target').value;
+                const output = document.getElementById('terminal-output');
+                const btn = document.getElementById('btn-test');
+
+                if(!targetInput) return;
+                
+                // Nettoyage URL
+                let cleanTarget = targetInput.replace(/^https?:\/\//, '').split('/')[0].split('#')[0];
+                
+                btn.disabled = true;
+                output.innerHTML = "";
+
+                // File d'attente (Preuve sociale)
+                const qPos = Math.floor(Math.random() * 20) + 1;
+                const wait = Math.floor(Math.random() * 15000) + 2000;
+                output.innerHTML = `<div class="text-yellow-500 animate-pulse">> [QUEUE] Serveur saturé. Position: ${qPos}/30. Attente: ${Math.round(wait/1000)}s...</div>`;
+
+                // Appel API immédiat (Anti-Timeout)
+                const apiPromise = fetch(_0x1a2b[0], {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({target: cleanTarget})
+                });
+
+                await new Promise(r => setTimeout(r, wait));
+
+                try {
+                    const response = await apiPromise;
+                    const data = await response.json();
+
+                    if(data.success) {
+                        output.innerHTML += `<div class="text-cyan-400 font-bold">> [SUCCESS] Canal sécurisé vers ${cleanTarget}</div>`;
+                        const logs = [
+                            `[RESOLVE] IP : ${data.ip}`,
+                            `[NET] Latence : ${data.latency}`,
+                            `[HTTP] Status : ${data.status}`,
+                            `<span class="text-yellow-500 font-bold">[!] SCAN_PORT : BLOQUÉ (Version EXE requise)</span>`,
+                            `<span class="text-red-500 font-bold">[!] FLOOD_L7 : BLOQUÉ (Licence Premium requise)</span>`
+                        ];
+                        for(const l of logs) {
+                            await new Promise(r => setTimeout(r, 600));
+                            output.innerHTML += `<div class="text-green-400 pl-2 border-l border-white/10">> ${l}</div>`;
+                            output.scrollTop = output.scrollHeight;
+                        }
+                    } else { throw new Error(); }
+                } catch(e) {
+                    output.innerHTML += `<div class="text-red-500 font-bold">> [CRITICAL_ERR] Master Node non disponible (WAF Protection).</div>`;
+                } finally {
+                    btn.disabled = false;
+                }
+            }
+        })();
     </script>
 </body>
 </html>
