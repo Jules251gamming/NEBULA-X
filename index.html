@@ -1,69 +1,134 @@
-// L'AUDIT RÉEL AVEC FILE D'ATTENTE (PROTÉGÉ)
-(function(){
-    const _0x1a2b=['\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6E\x65\x62\x75\x6C\x61\x2D\x78\x2D\x38\x72\x67\x61\x2E\x6F\x6E\x72\x65\x6E\x64\x65\x72\x2E\x63\x6F\x6D\x2F\x61\x70\x69\x2F\x64\x69\x61\x67\x6E\x6F\x73\x74\x69\x63'];
-    
-    window['runRealAudit'] = async function() {
-        const t = document['getElementById']('target')['value'];
-        const o = document['getElementById']('terminal-output');
-        const b = document['getElementById']('btn-test');
-        if(!t) return alert("Cible requise.");
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEBULA-X | Elite Network Auditing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --cyan-neon: #22d3ee; --dark-bg: #010101; }
+        body { background-color: var(--dark-bg); font-family: 'Fira Code', monospace; color: #fff; overflow-x: hidden; }
+        .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: 0; pointer-events: none; }
+        .cyber-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
+        .neon-text { text-shadow: 0 0 10px var(--cyan-neon); color: var(--cyan-neon); }
+        body.modal-open { overflow: hidden; }
+    </style>
+</head>
+<body class="modal-open">
 
-        b['disabled'] = !0;
-        o['innerHTML'] = "";
+    <canvas id="matrix" class="matrix-bg"></canvas>
 
-        // --- SYSTÈME DE FILE D'ATTENTE ALÉATOIRE ---
-        const queuePos = Math.floor(Math.random() * 45) + 1; // Position entre 1 et 45
-        const waitTime = Math.floor(Math.random() * (20000 - 1000 + 1)) + 1000; // Entre 1 et 20 sec
+    <div id="legal-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/98 backdrop-blur-xl px-4">
+        <div class="max-w-lg w-full cyber-card p-8 border-cyan-500/50 shadow-[0_0_60px_rgba(34,211,238,0.2)] text-center">
+            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase">Avertissement Légal</h2>
+            <p class="text-gray-400 text-[10px] mb-8 leading-relaxed">
+                En utilisant Nebula-X, vous acceptez que l'administrateur n'est pas responsable de vos actions. 
+                L'usage de ce terminal pour des activités illégales est strictement interdit.
+            </p>
+            <button onclick="acceptTerms()" class="w-full py-4 bg-cyan-500 text-black font-black uppercase tracking-widest hover:bg-white transition-all text-[10px]">
+                J'ACCEPTE LA RESPONSABILITÉ
+            </button>
+        </div>
+    </div>
+
+    <section class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
+        <h1 class="text-6xl font-black italic mb-12 neon-text">NEBULA<span class="text-white">-X</span></h1>
         
-        const queueDiv = document.createElement('div');
-        queueDiv.className = "text-yellow-500 font-bold animate-pulse";
-        queueDiv.innerHTML = `> [QUEUE] Charge serveur élevée. Vous êtes n°${queuePos} dans la file d'attente...`;
-        o.appendChild(queueDiv);
+        <div class="max-w-4xl w-full grid md:grid-cols-3 gap-6">
+            <div class="cyber-card p-6">
+                <label class="block text-[8px] text-gray-500 mb-2 uppercase font-bold">Target Host</label>
+                <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-3 rounded text-cyan-400 text-xs outline-none mb-4">
+                <button id="btn-test" onclick="runRealAudit()" class="w-full py-3 bg-cyan-500 text-black font-black text-[10px] uppercase">Lancer l'audit</button>
+            </div>
 
-        // Simulation de l'attente
-        await new Promise(x => setTimeout(x, waitTime));
+            <div class="md:col-span-2 cyber-card bg-black/90 rounded-lg overflow-hidden border border-cyan-500/20">
+                <div class="bg-white/5 px-4 py-2 text-[8px] text-cyan-500 border-b border-white/5 uppercase">Terminal Status: Connected</div>
+                <div id="terminal-output" class="p-4 h-64 overflow-y-auto font-mono text-[10px] space-y-1">
+                    <div class="text-gray-600">> Système prêt. En attente de cible...</div>
+                </div>
+            </div>
+        </div>
 
-        const connectDiv = document.createElement('div');
-        connectDiv.className = "text-cyan-400 font-bold";
-        connectDiv.innerHTML = `> [SUCCESS] Accès accordé. Connexion au Master Node...`;
-        o.appendChild(connectDiv);
-        // ------------------------------------------
+        <div class="mt-12 text-center max-w-xl">
+            <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-4">Version Web limitée à 75%. Pour la puissance totale :</p>
+            <a href="nebula-x.exe" download class="px-10 py-4 border border-cyan-500 text-cyan-500 font-black text-[10px] uppercase hover:bg-cyan-500 hover:text-black transition-all">
+                Télécharger Nebula-X.exe (100% Power)
+            </a>
+        </div>
+    </section>
 
-        try {
-            const r = await fetch(_0x1a2b[0], {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON['stringify']({target: t})
+    <script>
+        // MATRIX EFFECT
+        const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
+        canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+        const drops=Array(Math.floor(canvas.width/14)).fill(1);
+        function drawMatrix(){
+            ctx.fillStyle="rgba(1,1,1,0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="#22d3ee"; ctx.font="14px monospace";
+            drops.forEach((y,i)=>{
+                const text="01"[Math.floor(Math.random()*2)];
+                ctx.fillText(text,i*14,y*14);
+                if(y*14>canvas.height && Math.random()>0.975) drops[i]=0;
+                drops[i]++;
             });
-            const d = await r['json']();
-
-            if(d['success']){
-                const logs = [
-                    `[AUTH] Responsabilité validée par l'utilisateur.`,
-                    `[RESOLVE] IP Réelle : ${d['ip']}`,
-                    `[NET] Latence : ${d['latency']}`,
-                    `[HTTP] Status : ${d['status']} (Live)`,
-                    `<span class="text-yellow-500 font-bold">[!] PORT_SCAN : BLOQUÉ (Version .EXE requise)</span>`,
-                    `<span class="text-red-500 font-bold">[!] FLOOD_L7 : BLOQUÉ (Accès Premium uniquement)</span>`,
-                    `[SUCCESS] Audit 75% terminé.`
-                ];
-
-                for(const s of logs){
-                    await new Promise(x => setTimeout(x, 600));
-                    const e = document['createElement']('div');
-                    e['className'] = "text-green-400 pl-2 border-l border-white/10";
-                    e['innerHTML'] = `<span class="opacity-30">#</span> ${s}`;
-                    o['appendChild'](e);
-                    o['scrollTop'] = o['scrollHeight'];
-                }
-            } else { throw new Error(); }
-        } catch(e) {
-            const f = document['createElement']('div');
-            f['className'] = "text-red-500 font-bold";
-            f['innerText'] = "> [CRITICAL_ERR] NODE_TIMEOUT : Serveur saturé ou cible protégée.";
-            o['appendChild'](f);
-        } finally {
-            b['disabled'] = !1;
         }
-    }
-})();
+        setInterval(drawMatrix, 50);
+
+        function acceptTerms() {
+            document.getElementById('legal-modal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        // LOGIQUE 75% + FILE D'ATTENTE
+        (function(){
+            const _0x1a2b=['\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6E\x65\x62\x75\x6C\x61\x2D\x78\x2D\x38\x72\x67\x61\x2E\x6F\x6E\x72\x65\x6E\x64\x65\x72\x2E\x63\x6F\x6D\x2F\x61\x70\x69\x2F\x64\x69\x61\x67\x6E\x6F\x73\x74\x69\x63'];
+            
+            window.runRealAudit = async function() {
+                const target = document.getElementById('target').value;
+                const output = document.getElementById('terminal-output');
+                const btn = document.getElementById('btn-test');
+                if(!target) return;
+
+                btn.disabled = true;
+                output.innerHTML = "";
+
+                // File d'attente
+                const qPos = Math.floor(Math.random() * 30) + 1;
+                const wait = Math.floor(Math.random() * 15000) + 2000;
+                
+                output.innerHTML = `<div class="text-yellow-500 animate-pulse">> [QUEUE] Position: ${qPos}/30. Attente estimée: ${Math.round(wait/1000)}s...</div>`;
+                
+                await new Promise(r => setTimeout(r, wait));
+                output.innerHTML += `<div class="text-cyan-400">> [SUCCESS] Canal sécurisé ouvert vers ${target}</div>`;
+
+                try {
+                    const r = await fetch(_0x1a2b[0], {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({target: target})
+                    });
+                    const d = await r.json();
+
+                    if(d.success) {
+                        const logs = [
+                            `[RESOLVE] IP : ${d.ip}`,
+                            `[NET] Latence : ${d.latency}`,
+                            `[HTTP] Status : ${d.status}`,
+                            `<span class="text-yellow-600">[!] SCAN_PRO : Accès bridé (Version EXE requise)</span>`
+                        ];
+                        for(const l of logs) {
+                            await new Promise(r => setTimeout(r, 600));
+                            output.innerHTML += `<div class="text-green-400">> ${l}</div>`;
+                        }
+                    }
+                } catch(e) {
+                    output.innerHTML += `<div class="text-red-500">> [ERROR] Timeout serveur.</div>`;
+                } finally {
+                    btn.disabled = false;
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
