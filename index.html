@@ -13,73 +13,48 @@
         .cyber-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
         .neon-text { text-shadow: 0 0 10px var(--cyan-neon); color: var(--cyan-neon); }
         body.modal-open { overflow: hidden; }
-        .terminal-scrollbar::-webkit-scrollbar { width: 4px; }
-        .terminal-scrollbar::-webkit-scrollbar-thumb { background: var(--cyan-neon); }
     </style>
 </head>
 <body class="modal-open">
-
     <canvas id="matrix" class="matrix-bg"></canvas>
 
     <div id="legal-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/98 backdrop-blur-xl px-4">
         <div class="max-w-lg w-full cyber-card p-8 border-cyan-500/50 shadow-[0_0_60px_rgba(34,211,238,0.2)] text-center">
-            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase tracking-tighter">Avertissement Légal</h2>
-            <div class="text-gray-400 text-[10px] mb-8 leading-relaxed text-left border-l border-cyan-500/30 pl-4 space-y-2">
-                <p><span class="text-white font-bold underline">USAGE :</span> Ce terminal Web est une démonstration limitée à 75% des capacités réelles.</p>
-                <p><span class="text-white font-bold underline">RESPONSABILITÉ :</span> En cliquant sur accepter, vous devenez l'unique responsable des requêtes émises. L'administrateur décline toute responsabilité en cas d'usage malveillant.</p>
-                <p><span class="text-white font-bold underline">INFRASTRUCTURE :</span> Les tests sont effectués en temps réel via nos nœuds Cloud.</p>
-            </div>
-            <button onclick="acceptTerms()" class="w-full py-4 bg-cyan-500 text-black font-black uppercase tracking-widest hover:bg-white transition-all text-[10px]">
-                J'ACCEPTE LA RESPONSABILITÉ
-            </button>
+            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase">Avertissement Légal</h2>
+            <p class="text-gray-400 text-[10px] mb-8 leading-relaxed">
+                En accédant à NEBULA-X, vous acceptez la responsabilité totale des audits effectués. 
+                L'usage malveillant est strictement interdit par les lois internationales.
+            </p>
+            <button onclick="acceptTerms()" class="w-full py-4 bg-cyan-500 text-black font-black uppercase text-[10px]">J'ACCEPTE LA RESPONSABILITÉ</button>
         </div>
     </div>
 
     <section class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
-        <div class="text-center mb-12">
-            <h1 class="text-6xl md:text-8xl font-black italic neon-text tracking-tighter">NEBULA<span class="text-white">-X</span></h1>
-            <p class="text-[9px] text-gray-500 uppercase tracking-[1em] opacity-50 mt-2">Professional Cloud Auditing</p>
-        </div>
+        <h1 class="text-6xl font-black italic mb-12 neon-text">NEBULA-X</h1>
         
-        <div class="max-w-5xl w-full grid md:grid-cols-3 gap-6">
+        <div class="max-w-4xl w-full grid md:grid-cols-3 gap-6">
             <div class="cyber-card p-6 border-t-2 border-cyan-500/50">
-                <h3 class="text-white font-bold mb-6 uppercase text-[9px] tracking-widest">Configuration</h3>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-[8px] text-gray-500 mb-2 uppercase font-bold italic">Target Endpoint</label>
-                        <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-3 rounded text-cyan-400 text-xs outline-none focus:border-cyan-500 transition-all">
-                    </div>
-                    <button id="btn-test" onclick="runRealAudit()" class="w-full py-4 bg-cyan-500 text-black font-black text-[10px] uppercase tracking-tighter hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
-                        INITIALISER L'AUDIT
-                    </button>
-                </div>
+                <label class="block text-[8px] text-gray-500 mb-2 uppercase font-bold">Target Host</label>
+                <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-3 rounded text-cyan-400 text-xs outline-none mb-4 focus:border-cyan-500">
+                <button id="btn-test" onclick="runRealAudit()" class="w-full py-3 bg-cyan-500 text-black font-black text-[10px] uppercase hover:bg-white transition-all">INITIALISER L'AUDIT</button>
             </div>
 
-            <div class="md:col-span-2 cyber-card bg-black/90 rounded-lg overflow-hidden border border-cyan-500/20 shadow-2xl">
-                <div class="bg-white/5 px-4 py-2 flex justify-between items-center border-b border-white/5">
-                    <span class="text-[8px] text-cyan-500 font-bold uppercase tracking-widest italic animate-pulse">Master Node: Nebula-X-8zga</span>
-                    <div class="flex gap-1.5">
-                        <div class="w-2 h-2 rounded-full bg-red-500/20"></div>
-                        <div class="w-2 h-2 rounded-full bg-yellow-500/20"></div>
-                        <div class="w-2 h-2 rounded-full bg-green-500/20"></div>
-                    </div>
-                </div>
-                <div id="terminal-output" class="p-6 h-72 overflow-y-auto font-mono text-[10px] space-y-1 terminal-scrollbar">
-                    <div class="text-gray-600">> Système en attente d'instruction...</div>
+            <div class="md:col-span-2 cyber-card bg-black/90 rounded-lg overflow-hidden border border-cyan-500/20">
+                <div class="bg-white/5 px-4 py-2 text-[8px] text-cyan-500 border-b border-white/5 uppercase italic animate-pulse">Master Node: Connected</div>
+                <div id="terminal-output" class="p-4 h-64 overflow-y-auto font-mono text-[10px] space-y-1">
+                    <div class="text-gray-600">> Système prêt. En attente de cible...</div>
                 </div>
             </div>
         </div>
 
-        <div class="mt-12 p-8 cyber-card border-dashed border-cyan-500/30 text-center max-w-2xl">
-            <p class="text-[10px] text-gray-400 uppercase tracking-[0.3em] mb-6">Accédez à 100% des fonctions (L7 Flood, Port Scan) via le client Desktop</p>
-            <a href="./nebula-x.exe" download class="inline-block px-12 py-4 border-2 border-white text-white font-black text-[10px] uppercase hover:bg-white hover:text-black transition-all">
-                TÉLÉCHARGER NEBULA-X.EXE
-            </a>
+        <div class="mt-12 text-center">
+            <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-4">Version Web bridée. Pour 100% de puissance :</p>
+            <a href="./nebula-x.exe" download class="px-10 py-4 border border-white text-white font-black text-[10px] uppercase hover:bg-cyan-500 hover:text-black transition-all">Télécharger Nebula-X.exe</a>
         </div>
     </section>
 
     <script>
-        // MATRIX BACKGROUND EFFECT
+        // Matrix Background Logic
         const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
         canvas.width=window.innerWidth; canvas.height=window.innerHeight;
         const drops=Array(Math.floor(canvas.width/14)).fill(1);
@@ -100,70 +75,45 @@
             document.body.classList.remove('modal-open');
         }
 
-        // REAL-TIME AUDIT LOGIC (75% POWER + ASYNC FIX)
-        (function(){
-            const _0x1a2b=['\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6E\x65\x62\x75\x6C\x61\x2D\x78\x2D\x38\x72\x67\x61\x2E\x6F\x6E\x72\x65\x6E\x64\x65\x72\x2E\x63\x6F\x6D\x2F\x61\x70\x69\x2F\x64\x69\x61\x67\x6E\x6F\x73\x74\x69\x63'];
-            
-            window.runRealAudit = async function() {
-                let targetInput = document.getElementById('target').value;
-                const output = document.getElementById('terminal-output');
-                const btn = document.getElementById('btn-test');
+        // Audit Logic
+        window.runRealAudit = async function() {
+            let targetInput = document.getElementById('target').value;
+            const output = document.getElementById('terminal-output');
+            const btn = document.getElementById('btn-test');
+            if(!targetInput) return;
 
-                if(!targetInput) return;
+            let cleanTarget = targetInput.replace(/^https?:\/\//, '').split('/')[0].split('#')[0];
+            btn.disabled = true;
+            output.innerHTML = "";
 
-                // Nettoyage de l'URL pour éviter les Timeouts
-                let cleanTarget = targetInput.replace(/^https?:\/\//, '').split('/')[0].split('#')[0];
-                
-                btn.disabled = true;
-                output.innerHTML = "";
+            // File d'attente
+            const wait = Math.floor(Math.random() * 8000) + 2000;
+            output.innerHTML = `<div class="text-yellow-500 animate-pulse">> [QUEUE] Position: ${Math.floor(Math.random()*15)+1}/30. Synchronisation nœuds cloud...</div>`;
 
-                // Simulation de file d'attente (Preuve sociale)
-                const qPos = Math.floor(Math.random() * 25) + 1;
-                const wait = Math.floor(Math.random() * 7000) + 2000;
-                output.innerHTML = `<div class="text-yellow-500 animate-pulse">> [QUEUE] Charge élevée. Position: ${qPos}/30. Attente: ${Math.round(wait/1000)}s...</div>`;
+            // Appel API immédiat (pour éviter le timeout Render)
+            const apiCall = fetch('https://nebula-x-8zga.onrender.com/api/diagnostic', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({target: cleanTarget})
+            });
 
-                // LANCEMENT DE L'APPEL API PENDANT L'ATTENTE (Optimisation anti-timeout)
-                const apiPromise = fetch(_0x1a2b[0], {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({target: cleanTarget})
-                });
+            await new Promise(r => setTimeout(r, wait));
 
-                await new Promise(r => setTimeout(r, wait)); // On finit l'animation d'attente
-
-                try {
-                    const response = await apiPromise;
-                    const data = await response.json();
-
-                    if(data.success) {
-                        output.innerHTML += `<div class="text-cyan-400 font-bold">> [SUCCESS] Canal sécurisé établi vers ${cleanTarget}</div>`;
-                        
-                        const results = [
-                            `[AUTH] Responsabilité validée par signature IP.`,
-                            `[RESOLVE] IP Détectée : ${data.ip}`,
-                            `[NET] Latence : ${data.latency}`,
-                            `[HTTP] Status : ${data.status} (Stable)`,
-                            `<span class="text-yellow-500 font-bold">[!] PORT_SCAN : BLOQUÉ (Version EXE requise)</span>`,
-                            `<span class="text-red-500 font-bold">[!] L7_FLOOD : BLOQUÉ (Licence Premium requise)</span>`,
-                            `[DONE] Diagnostic partiel terminé.`
-                        ];
-
-                        for(const line of results) {
-                            await new Promise(r => setTimeout(r, 600));
-                            const div = document.createElement('div');
-                            div.className = "text-green-400 pl-2 border-l border-white/10";
-                            div.innerHTML = `<span class="opacity-30">#</span> ${line}`;
-                            output.appendChild(div);
-                            output.scrollTop = output.scrollHeight;
-                        }
-                    } else { throw new Error(); }
-                } catch(e) {
-                    output.innerHTML += `<div class="text-red-500 font-bold">> [CRITICAL_ERR] Master Node inaccessible ou cible protégée par WAF.</div>`;
-                } finally {
-                    btn.disabled = false;
-                }
+            try {
+                const response = await apiCall;
+                const data = await response.json();
+                if(data.success) {
+                    output.innerHTML += `<div class="text-cyan-400 font-bold">> [SUCCESS] Canal ouvert vers ${cleanTarget}</div>`;
+                    output.innerHTML += `<div class="text-green-400">> [IP] : ${data.ip}</div>`;
+                    output.innerHTML += `<div class="text-green-400">> [LATENCY] : ${data.latency}</div>`;
+                    output.innerHTML += `<div class="text-yellow-500 font-bold">> [!] SCAN_PRO : BLOQUÉ (Client EXE requis)</div>`;
+                } else { throw new Error(); }
+            } catch(e) {
+                output.innerHTML += `<div class="text-red-500 font-bold">> [CRITICAL_ERR] Master Node hors-ligne ou Cible protégée.</div>`;
+            } finally {
+                btn.disabled = false;
             }
-        })();
+        }
     </script>
 </body>
 </html>
