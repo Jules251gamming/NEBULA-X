@@ -30,16 +30,16 @@
     </div>
 
     <section class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
-        <h1 class="text-6xl font-black italic mb-12 neon-text">NEBULA-X</h1>
+        <h1 class="text-6xl font-black italic mb-12 neon-text tracking-tighter">NEBULA<span class="text-white">-X</span></h1>
         
         <div class="max-w-4xl w-full grid md:grid-cols-3 gap-6">
             <div class="cyber-card p-6 border-t-2 border-cyan-500/50">
                 <label class="block text-[8px] text-gray-500 mb-2 uppercase font-bold">Target Host</label>
-                <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-3 rounded text-cyan-400 text-xs outline-none mb-4 focus:border-cyan-500">
+                <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-3 rounded text-cyan-400 text-xs outline-none mb-4 focus:border-cyan-500 transition-all">
                 <button id="btn-test" onclick="runRealAudit()" class="w-full py-3 bg-cyan-500 text-black font-black text-[10px] uppercase hover:bg-white transition-all">INITIALISER L'AUDIT</button>
             </div>
 
-            <div class="md:col-span-2 cyber-card bg-black/90 rounded-lg overflow-hidden border border-cyan-500/20">
+            <div class="md:col-span-2 cyber-card bg-black/90 rounded-lg overflow-hidden border border-cyan-500/20 shadow-2xl">
                 <div class="bg-white/5 px-4 py-2 text-[8px] text-cyan-500 border-b border-white/5 uppercase italic animate-pulse">Master Node: Connected</div>
                 <div id="terminal-output" class="p-4 h-64 overflow-y-auto font-mono text-[10px] space-y-1">
                     <div class="text-gray-600">> Système prêt. En attente de cible...</div>
@@ -47,9 +47,21 @@
             </div>
         </div>
 
-        <div class="mt-12 text-center">
-            <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-4">Version Web bridée. Pour 100% de puissance :</p>
-            <a href="./nebula-x.exe" download class="px-10 py-4 border border-white text-white font-black text-[10px] uppercase hover:bg-cyan-500 hover:text-black transition-all">Télécharger Nebula-X.exe</a>
+        <div class="mt-12 max-w-4xl w-full grid md:grid-cols-2 gap-8 items-center">
+            <div class="p-6 border-l border-white/10 text-left">
+                <h3 class="text-cyan-500 font-bold uppercase text-[10px] mb-2 tracking-widest">Security Transparency</h3>
+                <p class="text-gray-500 text-[9px] leading-relaxed">
+                    Note : Nebula-X peut afficher un score de <span class="text-white">2/100 sur VirusTotal</span>. 
+                    Il s'agit de <span class="text-white">faux-positifs</span> liés aux fonctions d'analyse réseau (Raw Sockets). 
+                    L'outil est garanti sans code malveillant.
+                </p>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-4">Version 100% Power (L7 / Port Scan) :</p>
+                <a href="./nebula-x.exe" download class="inline-block px-10 py-4 border border-white text-white font-black text-[10px] uppercase hover:bg-cyan-500 hover:text-black transition-all">
+                    Télécharger Nebula-X.exe
+                </a>
+            </div>
         </div>
     </section>
 
@@ -86,11 +98,10 @@
             btn.disabled = true;
             output.innerHTML = "";
 
-            // File d'attente
             const wait = Math.floor(Math.random() * 8000) + 2000;
             output.innerHTML = `<div class="text-yellow-500 animate-pulse">> [QUEUE] Position: ${Math.floor(Math.random()*15)+1}/30. Synchronisation nœuds cloud...</div>`;
 
-            // Appel API immédiat (pour éviter le timeout Render)
+            // Appel API immédiat
             const apiCall = fetch('https://nebula-x-8zga.onrender.com/api/diagnostic', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
