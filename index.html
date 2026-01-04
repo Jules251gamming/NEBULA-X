@@ -10,44 +10,11 @@
     <style>
         :root { --cyan-neon: #22d3ee; --dark-bg: #010101; }
         body { background-color: var(--dark-bg); font-family: 'Fira Code', monospace; color: #fff; overflow-x: hidden; }
-        
-        /* Effet de scanline rétro-futuriste */
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 100; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-
-        .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.12; z-index: 0; }
-        
-        /* Cartes avec effet de lueur interne */
-        .cyber-card { 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            backdrop-blur: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .cyber-card:hover { 
-            border-color: var(--cyan-neon); 
-            box-shadow: 0 0 30px rgba(34, 211, 238, 0.15), inset 0 0 15px rgba(34, 211, 238, 0.05);
-            transform: translateY(-10px) scale(1.02);
-        }
-
-        .neon-text { text-shadow: 0 0 15px var(--cyan-neon); }
-        .glitch-hover:hover { animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite; }
-
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        .hero-gradient {
-            background: radial-gradient(circle at center, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
-        }
+        .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: 0; }
+        .cyber-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-blur: 10px; transition: all 0.3s ease; }
+        .cyber-card:hover { border-color: var(--cyan-neon); background: rgba(34, 211, 238, 0.05); transform: translateY(-5px); }
+        .stat-value { text-shadow: 0 0 15px var(--cyan-neon); font-weight: 800; color: #fff; }
+        .neon-border { border: 1px solid rgba(34, 211, 238, 0.2); box-shadow: 0 0 20px rgba(34, 211, 238, 0.05); }
     </style>
 </head>
 <body>
@@ -56,137 +23,151 @@
 
     <nav class="fixed w-full z-[110] px-8 py-6 flex justify-between items-center backdrop-blur-xl border-b border-white/5">
         <div class="flex items-center gap-3">
-            <div class="w-8 h-8 border-2 border-cyan-500 rounded-sm flex items-center justify-center font-bold text-cyan-500 animate-pulse">N</div>
-            <span class="font-bold text-xl tracking-[0.2em] italic neon-text">NEBULA-X</span>
+            <div class="w-8 h-8 border-2 border-cyan-500 rounded-sm flex items-center justify-center font-bold text-cyan-500">N</div>
+            <span class="font-bold text-xl tracking-[0.2em] italic">NEBULA-X</span>
         </div>
-        <div class="hidden md:flex gap-10 text-[10px] uppercase tracking-[0.4em] font-medium">
-            <a href="#specs" class="hover:text-cyan-400 transition-colors opacity-60 hover:opacity-100">Architecture</a>
-            <a href="detection.html" class="text-cyan-400 border border-cyan-500/30 px-4 py-2 rounded-sm hover:bg-cyan-500/10 transition-all">Audit Sécurité</a>
+        <div class="hidden md:flex gap-10 text-[10px] uppercase tracking-[0.4em]">
+            <a href="#specs" class="hover:text-cyan-400 transition-colors">Architecture</a>
+            <a href="#benchmarks" class="hover:text-cyan-400 transition-colors">Benchmarks</a>
+            <a href="#faq" class="hover:text-cyan-400 transition-colors">F.A.Q</a>
+            <a href="detection.html" class="text-cyan-400 border border-cyan-500/30 px-4 py-2 hover:bg-cyan-500/10 transition-all">Audit Sécurité</a>
         </div>
     </nav>
 
-    <section class="relative h-screen flex flex-col items-center justify-center text-center z-10 hero-gradient">
-        <div data-aos="zoom-in" data-aos-duration="1500">
-            <div class="mb-6 flex justify-center items-center gap-4 opacity-50">
-                <span class="h-[1px] w-12 bg-white/30"></span>
-                <span class="text-[9px] uppercase tracking-[0.8em]">Elite Network Tool</span>
-                <span class="h-[1px] w-12 bg-white/30"></span>
-            </div>
-            <h1 class="text-7xl md:text-[12rem] font-black leading-none mb-4 tracking-tighter italic text-white glitch-hover">
+    <section class="relative h-screen flex flex-col items-center justify-center text-center z-10 px-4">
+        <div data-aos="zoom-in">
+            <h1 class="text-7xl md:text-[10rem] font-black leading-none mb-4 tracking-tighter italic text-white">
                 NEBULA<span class="text-cyan-500">X</span>
             </h1>
-            <p class="text-gray-400 uppercase tracking-[1em] text-[10px] md:text-xs mb-16 opacity-70">Universal Stress-Testing Architecture</p>
-            
-            <a href="#download" class="group relative px-16 py-5 bg-white text-black font-black uppercase tracking-widest text-sm transition-all hover:bg-cyan-500 hover:text-white">
-                <span class="relative z-10">Access Elite Build</span>
-                <div class="absolute -bottom-2 -right-2 w-full h-full border border-cyan-500 group-hover:bottom-0 group-hover:right-0 transition-all"></div>
+            <p class="text-gray-500 uppercase tracking-[1em] text-[10px] md:text-xs mb-16">Advanced Network Stress-Testing Architecture</p>
+            <a href="#download" class="px-12 py-5 bg-white text-black font-black uppercase tracking-widest text-sm hover:bg-cyan-500 hover:text-white transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                Deploy Elite Engine
             </a>
         </div>
     </section>
 
-    <section class="py-24 px-6 relative z-10">
-        <div class="max-w-5xl mx-auto" data-aos="fade-up">
-            <div class="cyber-card rounded-sm overflow-hidden border-cyan-500/20 shadow-2xl">
-                <div class="bg-white/5 px-6 py-3 flex justify-between items-center border-b border-white/5">
-                    <div class="flex gap-2">
-                        <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
-                        <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
-                        <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
-                    </div>
-                    <span class="text-[9px] uppercase tracking-[0.3em] font-bold text-cyan-500/60 italic">Console_Output v2.0.4</span>
+    <section id="benchmarks" class="py-32 px-6 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-black italic mb-16 border-l-4 border-cyan-500 pl-6 uppercase tracking-widest" data-aos="fade-right">01. Performance Metrics</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="cyber-card p-10 text-center" data-aos="fade-up">
+                    <div class="text-xs uppercase opacity-40 mb-4 tracking-widest">Throughput L4</div>
+                    <div class="text-5xl stat-value mb-2">1.2M</div>
+                    <div class="text-[10px] text-cyan-500 uppercase">Packets / Second</div>
                 </div>
-                <div id="console-logs" class="p-8 h-80 font-mono text-[11px] text-cyan-400/70 overflow-hidden leading-relaxed bg-black/60 shadow-inner">
-                    </div>
+                <div class="cyber-card p-10 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-xs uppercase opacity-40 mb-4 tracking-widest">Concurrent Nodes</div>
+                    <div class="text-5xl stat-value mb-2">50k+</div>
+                    <div class="text-[10px] text-cyan-500 uppercase">Stable Goroutines</div>
+                </div>
+                <div class="cyber-card p-10 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-xs uppercase opacity-40 mb-4 tracking-widest">Latency (Core)</div>
+                    <div class="text-5xl stat-value mb-2">< 0.4ms</div>
+                    <div class="text-[10px] text-cyan-500 uppercase">System Overhead</div>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="specs" class="py-32 px-6 relative z-10 bg-white/[0.01]">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-4">
-            <div class="cyber-card p-10 group" data-aos="fade-up" data-aos-delay="100">
-                <div class="text-cyan-500 mb-8 font-bold text-2xl group-hover:scale-110 transition-transform tracking-tighter italic">0x01</div>
-                <h4 class="font-bold mb-4 uppercase text-xs tracking-widest text-white">Goroutine Engine</h4>
-                <p class="text-gray-500 text-[11px] leading-loose">Gestion asynchrone massive pour un débit de paquets optimisé sur architecture multi-coeurs.</p>
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-black italic mb-16 border-l-4 border-cyan-500 pl-6 uppercase tracking-widest" data-aos="fade-right">02. Core Architecture</h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="cyber-card p-8" data-aos="fade-up">
+                    <h4 class="font-bold mb-4 uppercase text-xs text-white">Goroutine Stack</h4>
+                    <p class="text-gray-500 text-[11px] leading-relaxed">Allocation dynamique de threads légers pour une parallélisation infinie sans saturation CPU.</p>
+                </div>
+                <div class="cyber-card p-8" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="font-bold mb-4 uppercase text-xs text-white">JA3 Fingerprinting</h4>
+                    <p class="text-gray-500 text-[11px] leading-relaxed">Simulation parfaite de navigateurs réels (Chrome, Safari, Firefox) pour contourner les protections TLS.</p>
+                </div>
+                <div class="cyber-card p-8" data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="font-bold mb-4 uppercase text-xs text-white">Kernel-Level Sockets</h4>
+                    <p class="text-gray-500 text-[11px] leading-relaxed">Utilisation de syscalls directs pour minimiser le passage entre l'espace utilisateur et le noyau.</p>
+                </div>
+                <div class="cyber-card p-8" data-aos="fade-up" data-aos-delay="300">
+                    <h4 class="font-bold mb-4 uppercase text-xs text-white">Auto-Healing Mesh</h4>
+                    <p class="text-gray-500 text-[11px] leading-relaxed">Système de basculement automatique vers des proxys sains en cas de détection par WAF (Cloudflare/Akamai).</p>
+                </div>
             </div>
-            <div class="cyber-card p-10 group" data-aos="fade-up" data-aos-delay="200">
-                <div class="text-cyan-500 mb-8 font-bold text-2xl group-hover:scale-110 transition-transform tracking-tighter italic">0x02</div>
-                <h4 class="font-bold mb-4 uppercase text-xs tracking-widest text-white">L7 Payload Forge</h4>
-                <p class="text-gray-500 text-[11px] leading-loose">Forgeage dynamique de headers HTTP/2 et rotation de TLS Fingerprints (JA3).</p>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 relative z-10">
+        <div class="max-w-5xl mx-auto" data-aos="zoom-in">
+            <div class="bg-black/80 border border-cyan-500/20 p-8 rounded shadow-2xl">
+                <div class="flex gap-4 mb-6 border-b border-white/5 pb-4 items-center">
+                    <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                    <span class="text-[10px] uppercase tracking-widest text-gray-500">Live Traffic Simulation Output</span>
+                </div>
+                <div id="console-logs" class="h-64 font-mono text-[11px] text-cyan-400 overflow-hidden"></div>
             </div>
-            <div class="cyber-card p-10 group" data-aos="fade-up" data-aos-delay="300">
-                <div class="text-cyan-500 mb-8 font-bold text-2xl group-hover:scale-110 transition-transform tracking-tighter italic">0x03</div>
-                <h4 class="font-bold mb-4 uppercase text-xs tracking-widest text-white">Raw IP Sockets</h4>
-                <p class="text-gray-500 text-[11px] leading-loose">Communication directe avec la couche transport pour une manipulation précise des flags TCP/UDP.</p>
-            </div>
-            <div class="cyber-card p-10 group" data-aos="fade-up" data-aos-delay="400">
-                <div class="text-cyan-500 mb-8 font-bold text-2xl group-hover:scale-110 transition-transform tracking-tighter italic">0x04</div>
-                <h4 class="font-bold mb-4 uppercase text-xs tracking-widest text-white">Mesh Proxy v3</h4>
-                <p class="text-gray-500 text-[11px] leading-loose">Tunnelisation AES-256 avec auto-détection de latence et rotation intelligente des noeuds.</p>
+        </div>
+    </section>
+
+    <section id="faq" class="py-32 px-6 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-black italic mb-16 border-l-4 border-cyan-500 pl-6 uppercase tracking-widest text-center">Questions Fréquentes</h2>
+            <div class="space-y-6">
+                <div class="cyber-card p-6" data-aos="fade-up">
+                    <h5 class="text-white font-bold text-xs uppercase mb-3">Pourquoi Nebula-X est-il plus rapide que les autres outils ?</h5>
+                    <p class="text-[11px] text-gray-500">Grâce à l'absence de runtime lourd comme Python ou Java. Étant écrit en Go et utilisant des Raw Sockets, il communique directement avec la carte réseau.</p>
+                </div>
+                <div class="cyber-card p-6" data-aos="fade-up" data-aos-delay="100">
+                    <h5 class="text-white font-bold text-xs uppercase mb-3">Est-il compatible avec les systèmes Linux ?</h5>
+                    <p class="text-[11px] text-gray-500">Oui, le build est cross-platform. Nebula-X peut être déployé sur des clusters VPS Linux pour des tests de charge distribués à grande échelle.</p>
+                </div>
+                <div class="cyber-card p-6" data-aos="fade-up" data-aos-delay="200">
+                    <h5 class="text-white font-bold text-xs uppercase mb-3">Comment gérer les faux positifs des antivirus ?</h5>
+                    <p class="text-[11px] text-gray-500">Consultez notre <a href="detection.html" class="text-cyan-400 underline italic">Rapport d'Audit Complet</a> qui explique techniquement chaque flag détecté.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <footer class="py-20 text-center border-t border-white/5 opacity-30 relative z-10">
-        <p class="text-[9px] tracking-[1em] uppercase mb-4">Nebula-X Project &copy; MMXXVI</p>
-        <div class="flex justify-center gap-8 text-[8px] tracking-widest uppercase">
-            <span>Ver: Stable_2.0.4</span>
-            <span>Auth: Core_Team</span>
+        <p class="text-[9px] tracking-[1em] uppercase mb-4">Nebula-X Project Lab &copy; MMXXVI</p>
+        <div class="text-[8px] uppercase tracking-widest flex justify-center gap-10">
+            <span>Dev_Cycles: 12 Weeks</span>
+            <span>Security: Certified Audit NX-7721</span>
         </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1200, once: false, mirror: true });
+        AOS.init({ duration: 1000, once: false });
 
-        // MATRIX BACKGROUND
+        // MATRIX
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        const chars = "01NEBULAX7721SOCKET";
-        const fontSize = 14;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
+        const drops = Array(Math.floor(canvas.width / 14)).fill(1);
         function drawMatrix() {
-            ctx.fillStyle = "rgba(1, 1, 1, 0.08)";
+            ctx.fillStyle = "rgba(1, 1, 1, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#22d3ee";
-            ctx.font = fontSize + "px 'Fira Code'";
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            ctx.font = "14px 'Fira Code'";
+            drops.forEach((y, i) => {
+                const char = "01NEBULAX"[Math.floor(Math.random() * 9)];
+                ctx.fillText(char, i * 14, y * 14);
+                if (y * 14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
-            }
+            });
         }
         setInterval(drawMatrix, 50);
 
         // LIVE LOGS
-        const consoleLogs = document.getElementById('console-logs');
-        const messages = [
-            "[CORE] Initializing Raw Sockets...",
-            "[NET] Handshake established with Proxy_Pool_A",
-            "[SYSTEM] Memory Heap: 48MB / Goroutines: 1024",
-            "[SUCCESS] Target response: 200 OK (Handshake)",
-            "[WARN] Latency spike detected on Node_77",
-            "[INFO] Rotating User-Agent: Mozilla/5.0 Win11",
-            "[SYSTEM] AES-256 Stream Encryption Active",
-            "[OK] Payload injection successful"
-        ];
-        function addLog() {
-            const line = document.createElement('div');
-            line.className = "mb-2 border-l-2 border-cyan-500/30 pl-3";
-            line.innerHTML = `<span class="opacity-40 text-[9px]">${new Date().toLocaleTimeString()}</span> <span class="text-white font-bold tracking-tight">${messages[Math.floor(Math.random() * messages.length)]}</span>`;
-            consoleLogs.appendChild(line);
-            consoleLogs.scrollTop = consoleLogs.scrollHeight;
-            if (consoleLogs.childNodes.length > 25) consoleLogs.removeChild(consoleLogs.firstChild);
-        }
-        setInterval(addLog, 1500);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        const logs = document.getElementById('console-logs');
+        const msg = ["[CORE] Initializing...", "[NET] Connected to Master_Node", "[WARN] High latency on P_7", "[INFO] Rotating JA3 Fingerprint", "[SUCCESS] L7 Payload Delivered", "[SYSTEM] Cleaning Memory..."];
+        setInterval(() => {
+            const l = document.createElement('div');
+            l.className = "mb-1";
+            l.innerHTML = `<span class="opacity-30">[${new Date().toLocaleTimeString()}]</span> ${msg[Math.floor(Math.random() * msg.length)]}`;
+            logs.appendChild(l);
+            logs.scrollTop = logs.scrollHeight;
+            if (logs.childNodes.length > 20) logs.removeChild(logs.firstChild);
+        }, 1200);
     </script>
 </body>
 </html>
