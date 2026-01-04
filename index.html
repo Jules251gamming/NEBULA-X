@@ -2,80 +2,119 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NEBULA-X | IMMERSIVE INTERFACE</title>
+    <title>NEBULA-X | OS INTERFACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
-        body { margin: 0; padding: 0; background-color: #000; color: #00ffcc; font-family: 'Orbitron', sans-serif; overflow: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;700&display=swap');
+        body { margin: 0; background-color: #050505; color: #00ffcc; font-family: 'Fira Code', monospace; overflow: hidden; }
         #vanta-bg { position: fixed; width: 100%; height: 100%; z-index: -1; }
-        .glass { background: rgba(0, 20, 20, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(0, 255, 204, 0.2); border-radius: 2px; }
-        .scanline { width: 100%; height: 2px; background: rgba(0, 255, 204, 0.1); position: absolute; animation: scan 4s linear infinite; }
-        @keyframes scan { from { top: 0; } to { top: 100%; } }
-        .audio-control { position: fixed; bottom: 20px; right: 20px; cursor: pointer; border: 1px solid #0f0; padding: 10px; font-size: 10px; }
+        .cyber-panel { background: rgba(0, 5, 5, 0.9); border: 1px solid rgba(0, 255, 204, 0.15); backdrop-filter: blur(10px); }
+        .nav-btn { cursor: pointer; transition: 0.3s; border-bottom: 2px solid transparent; }
+        .nav-btn:hover, .nav-btn.active { border-color: #00ffcc; color: white; text-shadow: 0 0 10px #00ffcc; }
+        .page { display: none; animation: fadeIn 0.5s ease-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <div id="vanta-bg"></div>
-    <div class="scanline"></div>
 
-    <div class="flex flex-col items-center justify-center h-screen relative z-10">
-        <div class="glass p-12 text-center max-w-3xl transform hover:scale-105 transition-all duration-700">
-            <h1 class="text-7xl font-black mb-2 tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-white to-cyan-500">NEBULA-X</h1>
-            <p class="text-cyan-400 text-xs tracking-[1em] mb-8 uppercase">Neural Intelligence Interface</p>
-            
-            <div class="grid grid-cols-3 gap-8 text-[10px] uppercase border-t border-cyan-900 pt-8">
-                <div class="hover:text-white transition">Core Status: Stable</div>
-                <div class="hover:text-white transition italic">Location: Encrypted</div>
-                <div class="hover:text-white transition">Active Nodes: 38K</div>
-            </div>
-
-            <button onclick="toggleAudio()" class="mt-10 px-8 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-bold uppercase text-xs tracking-widest">
-                Initialize System
-            </button>
+    <nav class="fixed top-0 w-full z-50 py-6 px-10 flex justify-between items-center border-b border-white/5 bg-black/50">
+        <div class="font-black text-xl tracking-tighter">NEBULA<span class="text-white">-X</span></div>
+        <div class="flex gap-10 text-[10px] tracking-[0.3em] uppercase">
+            <span class="nav-btn active" onclick="showPage('home')">01_Dashboard</span>
+            <span class="nav-btn" onclick="showPage('tools')">02_Tools</span>
+            <span class="nav-btn" onclick="showPage('security')">03_Security</span>
         </div>
-    </div>
+        <div class="text-[9px] opacity-40">STABLE_REL_2.6</div>
+    </nav>
 
-    <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <main class="h-screen flex items-center justify-center px-6">
+        
+        <section id="home" class="page active w-full max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="cyber-panel p-8 col-span-2">
+                    <h1 class="text-5xl font-black mb-4">SYSTEM_CORE</h1>
+                    <p class="text-gray-400 text-sm mb-6">Interface neuronale connectée. Monitoring en temps réel des flux de données entrant.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white/5 p-4 border-l-2 border-cyan-500">
+                            <div class="text-[10px] text-cyan-700">UPTIME</div>
+                            <div class="text-xl font-bold">99.98%</div>
+                        </div>
+                        <div class="bg-white/5 p-4 border-l-2 border-red-500">
+                            <div class="text-[10px] text-red-700">THREATS_BLOCKED</div>
+                            <div class="text-xl font-bold">1.2k</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cyber-panel p-6">
+                    <div class="text-xs mb-4 text-cyan-400 font-bold underline">LIVE_ACTIVITY</div>
+                    <div id="logs" class="text-[9px] space-y-2 text-gray-500 overflow-hidden h-40"></div>
+                </div>
+            </div>
+        </section>
 
-    <div class="audio-control glass" onclick="toggleAudio()">AUDIO: <span id="audio-status">OFF</span></div>
+        <section id="tools" class="page w-full max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="cyber-panel p-8 hover:bg-cyan-500/5 transition group">
+                    <div class="text-2xl font-bold mb-2 text-white group-hover:text-cyan-400">Vortex_Scanner</div>
+                    <p class="text-xs text-gray-500">Analyse de vulnérabilité réseau à haute fréquence.</p>
+                </div>
+                <div class="cyber-panel p-8 hover:bg-cyan-500/5 transition group">
+                    <div class="text-2xl font-bold mb-2 text-white group-hover:text-cyan-400">IP_Ghost</div>
+                    <p class="text-xs text-gray-500">Rotation dynamique de proxy et masquage d'identité.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="security" class="page w-full max-w-4xl text-center">
+            <div class="cyber-panel p-12">
+                <div class="inline-block p-4 border-2 border-red-500 rounded-full mb-6">
+                    <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0 0v2m0-2h2m-2 0H10m11-3V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2zm-9-3H9m12 0h-3"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold mb-4">PROTOCOLE_ALPHA</h2>
+                <p class="text-gray-400 text-sm mb-8">Le chiffrement AES-256 est activé sur tous les échanges. <br>Aucune log n'est conservée sur le serveur physique.</p>
+                <div class="text-[10px] py-2 px-4 bg-red-900/20 text-red-400 inline-block border border-red-900">ACCÈS_RESTREINT</div>
+            </div>
+        </section>
+
+    </main>
 
     <script>
-        // Initialisation de la 3D (Vanta Net)
+        // Gestion de la Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Animation 3D Vanta
         VANTA.NET({
             el: "#vanta-bg",
             mouseControls: true,
             touchControls: true,
-            gyroControls: false,
             minHeight: 200.00,
             minWidth: 200.00,
             scale: 1.00,
-            scaleMobile: 1.00,
             color: 0x00ffcc,
-            backgroundColor: 0x000,
+            backgroundColor: 0x050505,
             points: 12.00,
-            maxDistance: 22.00,
-            spacing: 16.00
-        })
+            maxDistance: 20.00,
+            spacing: 15.00
+        });
 
-        // Gestion de l'audio
-        const music = document.getElementById('bg-music');
-        const statusText = document.getElementById('audio-status');
-        
-        function toggleAudio() {
-            if (music.paused) {
-                music.play();
-                statusText.innerText = "ON";
-                statusText.style.color = "#0f0";
-            } else {
-                music.pause();
-                statusText.innerText = "OFF";
-                statusText.style.color = "#f00";
-            }
-        }
+        // Logs automatiques
+        const logLines = ["Analyzing packet...", "Node sync complete", "Gateway secure", "Encrypted link OK"];
+        setInterval(() => {
+            const l = document.getElementById('logs');
+            const d = document.createElement('div');
+            d.innerHTML = `> ${logLines[Math.floor(Math.random()*logLines.length)]}`;
+            l.prepend(d);
+            if(l.childNodes.length > 8) l.removeChild(l.lastChild);
+        }, 3000);
     </script>
 </body>
 </html>
