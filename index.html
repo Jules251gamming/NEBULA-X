@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEBULA-X | Real-Time Network Auditing</title>
+    <title>NEBULA-X | Professional Network Auditing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500;700&display=swap" rel="stylesheet">
@@ -11,44 +11,49 @@
         :root { --cyan-neon: #22d3ee; --dark-bg: #010101; }
         body { background-color: var(--dark-bg); font-family: 'Fira Code', monospace; color: #fff; overflow-x: hidden; }
         .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: 0; pointer-events: none; }
-        .cyber-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-blur: 10px; transition: all 0.3s ease; }
+        .cyber-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); transition: all 0.3s ease; }
         .cyber-card:hover { border-color: var(--cyan-neon); background: rgba(34, 211, 238, 0.05); }
         .neon-text { text-shadow: 0 0 10px var(--cyan-neon); color: var(--cyan-neon); }
         body.modal-open { overflow: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--cyan-neon); }
     </style>
 </head>
 <body class="modal-open">
 
     <canvas id="matrix" class="matrix-bg"></canvas>
 
-    <div id="legal-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/98 backdrop-blur-lg px-4">
-        <div class="max-w-lg w-full cyber-card p-8 border-cyan-500/50 shadow-[0_0_60px_rgba(34,211,238,0.15)]">
-            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase tracking-tighter">Conditions d'Utilisation Réelle</h2>
+    <div id="legal-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/98 backdrop-blur-xl px-4">
+        <div class="max-w-lg w-full cyber-card p-8 border-cyan-500/50 shadow-[0_0_60px_rgba(34,211,238,0.2)]">
+            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase tracking-tighter">Avertissement Légal</h2>
             <div class="space-y-4 text-gray-400 text-[10px] leading-relaxed font-mono mb-8 border-l-2 border-cyan-500/30 pl-4">
-                <p><span class="text-white font-bold uppercase underline">Absence de simulation :</span> En utilisant ce terminal, vous déclenchez des requêtes réseau réelles depuis notre infrastructure Cloud.</p>
-                <p><span class="text-white font-bold uppercase underline">Responsabilité pénale :</span> Vous êtes l'unique responsable des cibles que vous auditez. L'administrateur de NEBULA-X ne pourra être tenu responsable d'un usage malveillant ou illégal.</p>
-                <p><span class="text-white font-bold uppercase underline">Audit autorisé :</span> Vous certifiez être propriétaire de la cible ou avoir un accord écrit pour effectuer ce diagnostic de charge.</p>
+                <p><span class="text-white font-bold underline">PRODUIT :</span> Cette version Web est limitée à 75% des capacités de Nebula-X.</p>
+                <p><span class="text-white font-bold underline">RESPONSABILITÉ :</span> En accédant à ce terminal, vous acceptez être l'unique responsable des cibles auditées. L'administrateur décline toute responsabilité en cas d'usage illégal.</p>
+                <p><span class="text-white font-bold underline">ACCORD :</span> Vous certifiez être propriétaire de la cible ou avoir l'autorisation nécessaire.</p>
             </div>
             <button onclick="acceptTerms()" class="w-full py-4 bg-cyan-500 text-black font-black uppercase tracking-widest hover:bg-white transition-all text-[10px]">
-                J'ACCEPTE ET JE SUIS RESPONSABLE
+                ACCEPTER LA RESPONSABILITÉ
             </button>
         </div>
     </div>
 
     <nav class="fixed w-full z-[110] px-8 py-6 flex justify-between items-center backdrop-blur-xl border-b border-white/5">
         <div class="flex items-center gap-3">
-            <div class="w-8 h-8 border-2 border-cyan-500 rounded-sm flex items-center justify-center font-bold text-cyan-500">N</div>
+            <div class="w-8 h-8 border-2 border-cyan-500 rounded-sm flex items-center justify-center font-bold text-cyan-500 animate-pulse">N</div>
             <span class="font-bold text-xl tracking-[0.2em] italic neon-text">NEBULA-X</span>
         </div>
-        <div class="text-[9px] uppercase tracking-[0.4em] opacity-70">Cloud Terminal v2.0.4</div>
+        <div class="hidden md:flex gap-8 text-[9px] uppercase tracking-[0.4em] opacity-60">
+            <a href="#benchmarks" class="hover:text-cyan-400 transition-colors">Infrastructure</a>
+            <a href="#live-test" class="hover:text-cyan-400 transition-colors text-cyan-400">Cloud Terminal</a>
+        </div>
     </nav>
 
-    <section class="relative h-[70vh] flex flex-col items-center justify-center text-center z-10 px-4">
+    <section class="relative h-[60vh] flex flex-col items-center justify-center text-center z-10 px-4">
         <div data-aos="zoom-in">
             <h1 class="text-6xl md:text-[8rem] font-black leading-none mb-4 tracking-tighter italic text-white">
-                LIVE<span class="text-cyan-500">AUDIT</span>
+                CORE<span class="text-cyan-500">PROBE</span>
             </h1>
-            <p class="text-gray-500 uppercase tracking-[1em] text-[10px] opacity-60">Zéro Simulation • Données Réelles</p>
+            <p class="text-gray-500 uppercase tracking-[1em] text-[10px] opacity-60">Zéro Simulation • 75% Power Enabled</p>
         </div>
     </section>
 
@@ -56,51 +61,59 @@
         <div class="max-w-5xl mx-auto">
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="cyber-card p-8 h-fit">
-                    <h3 class="text-white font-bold mb-6 uppercase text-[9px] tracking-widest">Target Configuration</h3>
+                    <h3 class="text-white font-bold mb-6 uppercase text-[9px] tracking-widest">Target Config</h3>
                     <div class="space-y-6">
                         <div>
-                            <label class="block text-[8px] text-gray-500 mb-2 uppercase italic font-bold">Endpoint (URL ou IP)</label>
+                            <label class="block text-[8px] text-gray-500 mb-2 uppercase">Endpoint (URL/IP)</label>
                             <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-4 rounded text-cyan-400 font-mono text-xs outline-none focus:border-cyan-500 transition-all">
                         </div>
-                        <button onclick="runRealAudit()" id="btn-test" class="w-full py-4 bg-cyan-500 text-black font-black uppercase tracking-tighter hover:bg-white transition-all text-[10px] shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-                            EXECUTE REAL AUDIT
+                        <button onclick="runRealAudit()" id="btn-test" class="w-full py-4 bg-cyan-500 text-black font-black uppercase tracking-tighter hover:bg-white transition-all text-[10px]">
+                            EXECUTE DIAGNOSTIC
                         </button>
                     </div>
                 </div>
 
                 <div class="md:col-span-2 cyber-card bg-black rounded-xl overflow-hidden border-cyan-500/20 shadow-2xl">
                     <div class="bg-white/5 px-6 py-3 flex justify-between items-center border-b border-white/5">
-                        <span class="text-[8px] text-cyan-500 font-bold uppercase tracking-widest animate-pulse italic">Master Node: nebula-x-8zga.onrender.com</span>
+                        <span class="text-[8px] text-cyan-500 font-bold uppercase tracking-widest italic animate-pulse">Master Node: Nebula-X-8zga</span>
                         <div class="flex gap-2">
-                            <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
-                            <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
-                            <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                            <div class="w-2 h-2 rounded-full bg-red-500/30"></div>
+                            <div class="w-2 h-2 rounded-full bg-yellow-500/30"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500/30"></div>
                         </div>
                     </div>
-                    <div id="terminal-output" class="p-6 h-96 font-mono text-[10px] overflow-y-auto space-y-1">
-                        <div class="text-gray-600">> En attente d'autorisation utilisateur...</div>
+                    <div id="terminal-output" class="p-6 h-80 font-mono text-[10px] overflow-y-auto space-y-1">
+                        <div class="text-gray-600">> En attente d'instruction...</div>
                     </div>
                 </div>
             </div>
+            
+            <div class="mt-8 p-6 cyber-card border-dashed border-cyan-500/30 text-center">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Besoin de 100% de puissance ? Port Scan, WAF Bypass et Flood L7 disponibles sur la version Desktop.</p>
+                <button class="mt-4 text-cyan-400 font-bold uppercase text-[9px] hover:underline">Accéder à la version complète →</button>
+            </div>
         </div>
     </section>
+
+    <footer class="py-12 text-center border-t border-white/5 opacity-20 relative z-10">
+        <p class="text-[8px] tracking-[1em] uppercase italic">Nebula-X Infrastructure MMXXVI</p>
+    </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1000 });
 
-        // MATRIX BACKGROUND
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const drops = Array(Math.floor(canvas.width / 14)).fill(1);
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(1, 1, 1, 0.1)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#22d3ee"; ctx.font = "14px monospace";
-            drops.forEach((y, i) => {
-                const text = "01"[Math.floor(Math.random() * 2)];
-                ctx.fillText(text, i * 14, y * 14);
-                if (y * 14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        // MATRIX EFFECT
+        const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
+        canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+        const drops=Array(Math.floor(canvas.width/14)).fill(1);
+        function drawMatrix(){
+            ctx.fillStyle="rgba(1,1,1,0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="#22d3ee"; ctx.font="14px monospace";
+            drops.forEach((y,i)=>{
+                const text="01"[Math.floor(Math.random()*2)];
+                ctx.fillText(text,i*14,y*14);
+                if(y*14>canvas.height && Math.random()>0.975) drops[i]=0;
                 drops[i]++;
             });
         }
@@ -112,60 +125,56 @@
             document.body.classList.remove('modal-open');
         }
 
-        // L'AUDIT RÉEL (PAS DE SIMULATION)
-        async function runRealAudit() {
-            const targetInput = document.getElementById('target').value;
-            const output = document.getElementById('terminal-output');
-            const btn = document.getElementById('btn-test');
+        // 75% FUNCTIONAL AUDIT (OBFUSQUÉ)
+        (function(){
+            const _0x1a2b=['\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6E\x65\x62\x75\x6C\x61\x2D\x78\x2D\x38\x72\x67\x61\x2E\x6F\x6E\x72\x65\x6E\x64\x65\x72\x2E\x63\x6F\x6D\x2F\x61\x70\x69\x2F\x64\x69\x61\x67\x6E\x6F\x73\x74\x69\x63'];
+            window['runRealAudit']=async function(){
+                const t=document['getElementById']('target')['value'];
+                const o=document['getElementById']('terminal-output');
+                const b=document['getElementById']('btn-test');
+                if(!t)return;
 
-            if (!targetInput) return alert("Cible manquante.");
+                o['innerHTML']=`<div class="text-cyan-400">[${new Date().toLocaleTimeString()}] > Initialisation Cloud Probe (Free Tier)...</div>`;
+                b['disabled']=!0;
 
-            // Reset terminal
-            output.innerHTML = `<div class="text-cyan-400">[${new Date().toLocaleTimeString()}] > Établissement du tunnel vers l'infrastructure Cloud...</div>`;
-            btn.disabled = true;
-            btn.innerText = "AUDIT EN COURS...";
+                try {
+                    const r=await fetch(_0x1a2b[0],{
+                        method:'POST',
+                        headers:{'Content-Type':'application/json'},
+                        body:JSON['stringify']({target:t})
+                    });
+                    const d=await r['json']();
 
-            try {
-                // APPEL RÉEL À TON API SUR RENDER
-                const response = await fetch('https://nebula-x-8zga.onrender.com/api/diagnostic', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ target: targetInput })
-                });
+                    if(d['success']){
+                        const logs=[
+                            `[AUTH] Responsabilité validée.`,
+                            `[RESOLVE] IP Réelle : ${d['ip']}`,
+                            `[NET] Latence : ${d['latency']}`,
+                            `[HTTP] Status : ${d['status']} (Live)`,
+                            `<span class="text-yellow-500 font-bold">[!] PORT_SCAN : BLOQUÉ (Version Pro)</span>`,
+                            `<span class="text-yellow-500 font-bold">[!] FLOOD_L7 : BLOQUÉ (Version Pro)</span>`,
+                            `[SUCCESS] Diagnostic 75% terminé.`
+                        ];
 
-                const data = await response.json();
-
-                if (data.success) {
-                    const logs = [
-                        `[AUTH] Responsabilité acceptée par l'utilisateur.`,
-                        `[RESOLVE] IP Réelle trouvée : ${data.ip}`,
-                        `[NETWORK] Latence réelle mesurée : ${data.latency}`,
-                        `[HTTP] Code de statut cible : ${data.status}`,
-                        `[RESULT] La cible est joignable. Prête pour l'audit de stress.`
-                    ];
-
-                    for (const log of logs) {
-                        await new Promise(r => setTimeout(r, 500));
-                        const div = document.createElement('div');
-                        div.className = "text-green-400";
-                        div.innerHTML = `<span class="opacity-40">[SYSTEM]</span> ${log}`;
-                        output.appendChild(div);
-                        output.scrollTop = output.scrollHeight;
-                    }
-                } else {
-                    throw new Error(data.error || "Hôte inaccessible ou protégé.");
+                        for(const s of logs){
+                            await new Promise(x=>setTimeout(x,600));
+                            const e=document['createElement']('div');
+                            e['className']="text-green-400 pl-2 border-l border-white/10";
+                            e['innerHTML']=`<span class="opacity-30">#</span> ${s}`;
+                            o['appendChild'](e);
+                            o['scrollTop']=o['scrollHeight'];
+                        }
+                    } else { throw new Error(); }
+                } catch(e) {
+                    const f=document['createElement']('div');
+                    f['className']="text-red-500 font-bold";
+                    f['innerText']="> [CRITICAL_ERR] CIBLE PROTÉGÉE OU SERVEUR OFFLINE";
+                    o['appendChild'](f);
+                } finally {
+                    b['disabled']=!1;
                 }
-            } catch (err) {
-                const div = document.createElement('div');
-                div.className = "text-red-500 font-bold";
-                div.innerText = `> [CRITICAL_FAILURE] ${err.message}`;
-                output.appendChild(div);
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "EXECUTE REAL AUDIT";
             }
-        }
+        })();
     </script>
 </body>
 </html>
-
