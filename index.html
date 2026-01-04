@@ -6,114 +6,134 @@
     <title>NEBULA-X | Elite Networking Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #010101; font-family: 'Fira Code', monospace; color: #fff; overflow-x: hidden; }
-        .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: 0; pointer-events: none; }
-        .cyber-card { background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .cyber-card:hover { border-color: #22d3ee; box-shadow: 0 0 20px rgba(34, 211, 238, 0.1); }
-        .stat-value { font-variant-numeric: tabular-nums; }
+        .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; z-index: 0; pointer-events: none; }
+        .cyber-card { background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-blur: 5px; }
+        .cyber-card:hover { border-color: #22d3ee; box-shadow: 0 0 20px rgba(34, 211, 238, 0.1); transform: translateY(-5px); transition: all 0.3s ease; }
+        .glow-text { text-shadow: 0 0 20px rgba(34, 211, 238, 0.6); }
+        .btn-glow:hover { box-shadow: 0 0 30px rgba(34, 211, 238, 0.4); }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #010101; }
+        ::-webkit-scrollbar-thumb { background: #22d3ee; }
     </style>
 </head>
 <body>
 
     <canvas id="matrix" class="matrix-bg"></canvas>
 
-    <nav class="fixed w-full z-50 px-10 py-6 flex justify-between items-center backdrop-blur-sm border-b border-white/5">
-        <div class="font-bold text-xl tracking-tighter text-cyan-500">NEBULA-X</div>
-        <div class="flex gap-8 text-[10px] uppercase tracking-[0.2em] opacity-50">
-            <a href="#tech" class="hover:opacity-100">Technologie</a>
-            <a href="#logs" class="hover:opacity-100">Live Activity</a>
-            <a href="#download" class="hover:opacity-100 text-cyan-400 font-bold">Download</a>
+    <nav class="fixed w-full z-50 px-6 md:px-10 py-6 flex justify-between items-center backdrop-blur-md border-b border-white/5">
+        <div class="font-bold text-2xl tracking-tighter text-cyan-500 glow-text italic">NEBULA-X</div>
+        <div class="hidden md:flex gap-8 text-[10px] uppercase tracking-[0.3em] opacity-60">
+            <a href="#features" class="hover:text-cyan-400 transition">Spécifications</a>
+            <a href="#security" class="hover:text-cyan-400 transition">Sécurité</a>
+            <a href="detection.html" class="text-cyan-400 font-bold border-b border-cyan-400">Rapport d'Audit</a>
         </div>
     </nav>
 
-    <section class="relative h-screen flex flex-col items-center justify-center text-center z-10">
-        <div data-aos="zoom-out" data-aos-duration="2000">
-            <h1 class="text-7xl md:text-[12rem] font-black leading-none mb-4 tracking-tighter italic">NEBULA<span class="text-cyan-500">X</span></h1>
-            <div class="h-1 w-24 bg-cyan-500 mx-auto mb-8"></div>
-            <p class="text-gray-500 uppercase tracking-[0.5em] text-xs mb-12">Universal Stress-Testing Architecture</p>
-            <div class="bg-white text-black px-12 py-4 font-black cursor-pointer hover:bg-cyan-500 transition-all duration-500">
-                ACCESS ELITE BUILD
+    <section class="relative h-screen flex flex-col items-center justify-center text-center z-10 px-4">
+        <div data-aos="zoom-out" data-aos-duration="2000" data-aos-mirror="true">
+            <div class="inline-block px-4 py-1 border border-cyan-500/30 rounded-full text-cyan-400 text-[10px] tracking-[0.4em] mb-8 uppercase bg-cyan-500/5">
+                Stable Build v2.0.4 r72
+            </div>
+            <h1 class="text-6xl md:text-[10rem] font-black leading-none mb-4 tracking-tighter italic glow-text">NEBULA<span class="text-cyan-500">X</span></h1>
+            <p class="text-gray-500 uppercase tracking-[0.6em] text-[10px] md:text-xs mb-12">Universal Stress-Testing Architecture</p>
+            <div class="flex flex-col md:flex-row gap-6 justify-center">
+                <a href="#download" class="bg-white text-black px-12 py-4 font-black btn-glow transition-all duration-500 uppercase tracking-widest text-sm">
+                    Access Elite Build
+                </a>
             </div>
         </div>
     </section>
 
-    <section id="logs" class="py-20 px-6 max-w-6xl mx-auto" data-aos="fade-up">
-        <div class="bg-black border border-white/10 rounded-lg overflow-hidden shadow-2xl">
-            <div class="bg-white/5 px-4 py-2 flex justify-between text-[10px] uppercase tracking-widest text-gray-500 italic">
-                <span>System_Terminal / Live_Activity</span>
-                <span class="text-green-500">Network: Active</span>
+    <section class="py-20 px-6 max-w-5xl mx-auto z-10 relative">
+        <div class="cyber-card rounded-lg overflow-hidden shadow-2xl" data-aos="fade-up" data-aos-mirror="true">
+            <div class="bg-white/5 px-4 py-2 flex justify-between text-[9px] uppercase tracking-[0.2em] text-gray-500 font-bold">
+                <span>Core_Terminal v2.0.4</span>
+                <span class="text-green-500 animate-pulse">● System_Online</span>
             </div>
-            <div id="console-logs" class="p-6 h-64 font-mono text-xs text-cyan-500/80 overflow-hidden leading-relaxed">
+            <div id="console-logs" class="p-6 h-64 font-mono text-[11px] text-cyan-500/80 overflow-hidden leading-relaxed bg-black/40">
                 </div>
         </div>
     </section>
 
-    <section id="tech" class="py-32 px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-4">
-            <div class="cyber-card p-6" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true">
-                <div class="text-cyan-500 mb-4 font-bold">0x01</div>
-                <h4 class="font-bold mb-2 uppercase text-xs">Asynchronous Core</h4>
-                <p class="text-gray-500 text-[10px]">Utilisation intensive de Goroutines pour une gestion de flux non-bloquante.</p>
+    <section id="features" class="py-32 px-6 z-10 relative">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-6">
+            <div class="cyber-card p-8" data-aos="fade-up" data-aos-delay="100" data-aos-mirror="true">
+                <div class="text-cyan-500 mb-6 font-bold text-xl tracking-tighter">01</div>
+                <h4 class="font-bold mb-3 uppercase text-xs tracking-widest text-white">Goroutine Engine</h4>
+                <p class="text-gray-500 text-[11px] leading-relaxed">Multi-threading asynchrone capable de générer 50k+ requêtes/sec sur matériel standard.</p>
             </div>
-            <div class="cyber-card p-6" data-aos="fade-up" data-aos-delay="200" data-aos-mirror="true">
-                <div class="text-cyan-500 mb-4 font-bold">0x02</div>
-                <h4 class="font-bold mb-2 uppercase text-xs">TCP/UDP Flood</h4>
-                <p class="text-gray-500 text-[10px]">Moteur capable de basculer instantanément entre différents protocoles réseau.</p>
+            <div class="cyber-card p-8" data-aos="fade-up" data-aos-delay="200" data-aos-mirror="true">
+                <div class="text-cyan-500 mb-6 font-bold text-xl tracking-tighter">02</div>
+                <h4 class="font-bold mb-3 uppercase text-xs tracking-widest text-white">L7 Mitigation Bypass</h4>
+                <p class="text-gray-500 text-[11px] leading-relaxed">Rotation dynamique des en-têtes et des payloads pour simuler un comportement humain réel.</p>
             </div>
-            <div class="cyber-card p-6" data-aos="fade-up" data-aos-delay="300" data-aos-mirror="true">
-                <div class="text-cyan-500 mb-4 font-bold">0x03</div>
-                <h4 class="font-bold mb-2 uppercase text-xs">Proxy Rotator</h4>
-                <p class="text-gray-500 text-[10px]">Gestion intelligente d'une liste de 10,000+ proxys avec auto-détection des bannissements.</p>
+            <div class="cyber-card p-8" data-aos="fade-up" data-aos-delay="300" data-aos-mirror="true">
+                <div class="text-cyan-500 mb-6 font-bold text-xl tracking-tighter">03</div>
+                <h4 class="font-bold mb-3 uppercase text-xs tracking-widest text-white">Raw Socket Access</h4>
+                <p class="text-gray-500 text-[11px] leading-relaxed">Communication directe avec la couche transport pour un contrôle total des paquets IP.</p>
             </div>
-            <div class="cyber-card p-6" data-aos="fade-up" data-aos-delay="400" data-aos-mirror="true">
-                <div class="text-cyan-500 mb-4 font-bold">0x04</div>
-                <h4 class="font-bold mb-2 uppercase text-xs">Payload Encryption</h4>
-                <p class="text-gray-500 text-[10px]">Offuscation des paquets sortants pour contourner les inspections SSL/TLS avancées.</p>
+            <div class="cyber-card p-8" data-aos="fade-up" data-aos-delay="400" data-aos-mirror="true">
+                <div class="text-cyan-500 mb-6 font-bold text-xl tracking-tighter">04</div>
+                <h4 class="font-bold mb-3 uppercase text-xs tracking-widest text-white">Proxy Mesh v3</h4>
+                <p class="text-gray-500 text-[11px] leading-relaxed">Système d'auto-healing pour les proxys bannis avec tunnelisation AES-256 intégrée.</p>
             </div>
         </div>
     </section>
 
-    <section class="py-32 bg-white/5 px-6">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
-            <div class="flex-1" data-aos="fade-right" data-aos-mirror="true">
-                <h2 class="text-4xl font-black italic mb-6 uppercase">Security Integrity</h2>
-                <p class="text-gray-500 text-sm leading-loose mb-8">
-                    Notre binaire est compilé avec des **Raw Socket APIs**. Ces bibliothèques accèdent directement à la couche réseau de Windows, ce qui déclenche des alertes heuristiques chez certains fournisseurs. 
-                    C'est le prix de la performance absolue.
+    <section id="security" class="py-40 px-6 z-10 relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-black italic mb-10 tracking-tighter uppercase" data-aos="fade-up" data-aos-mirror="true">Intégrité du Binaire</h2>
+            <div class="cyber-card p-10 rounded-2xl" data-aos="zoom-in" data-aos-mirror="true">
+                <p class="text-gray-400 text-sm mb-8 leading-relaxed">
+                    Nebula-X est conçu pour la performance. Son score de <span class="text-cyan-400 font-bold italic">2/72</span> est une signature de sa puissance technologique (Raw Sockets).
                 </p>
-                <div class="text-xs font-mono text-cyan-400 bg-black p-4 border border-cyan-500/20">
-                    [SYSTEM] VirusTotal Score: 2/72 (FP - Heuristic Detection)
-                </div>
-            </div>
-            <div class="w-64 h-64 flex items-center justify-center border-2 border-dashed border-white/10 rounded-full" data-aos="zoom-in" data-aos-mirror="true">
-                <div class="text-center">
-                    <div class="text-6xl font-black">100%</div>
-                    <div class="text-[10px] uppercase text-gray-500 tracking-widest">Safe Code</div>
+                <div class="grid md:grid-cols-2 gap-8 items-center border-t border-white/5 pt-10">
+                    <div class="text-left">
+                        <p class="text-[10px] text-gray-500 uppercase mb-2 tracking-widest font-bold underline decoration-cyan-500">SHA-256 Verification</p>
+                        <code class="text-[10px] text-cyan-400 break-all bg-black/50 p-3 rounded block border border-white/5">
+                            79F09831DF13C974778FDD9F475A0D6868D86E9FDC039C1095D29BA5CE080452
+                        </code>
+                    </div>
+                    <div>
+                        <a href="detection.html" class="inline-block text-[10px] font-black uppercase tracking-[0.3em] text-white border border-white/20 px-6 py-4 hover:bg-white hover:text-black transition-all">
+                            Voir le Rapport complet
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <footer class="py-20 text-center z-10 relative border-t border-white/5">
+        <p class="opacity-20 text-[9px] tracking-[0.5em] uppercase mb-4">Nebula-X Elite Suite &copy; 2026</p>
+        <div class="flex justify-center gap-6 opacity-40 text-[8px] uppercase tracking-widest">
+            <span>Dev_Time: 3 Months</span>
+            <span>Status: Final_Release</span>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // AOS
-        AOS.init({ duration: 1000, mirror: true });
+        // AOS avec Mirror: true pour apparition/disparition
+        AOS.init({ duration: 1000, mirror: true, once: false });
 
-        // MATRIX BACKGROUND
+        // MATRIX CANVAS
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        const chars = "010101NEBULA-XSECURITYCOREASYNC";
-        const fontSize = 10;
+        const chars = "0101NEBULAX7721SOCKETCOREGOASYNC";
+        const fontSize = 11;
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
         function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillStyle = "rgba(1, 1, 1, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0ff";
-            ctx.font = fontSize + "px monospace";
+            ctx.fillStyle = "#22d3ee";
+            ctx.font = fontSize + "px 'Fira Code'";
             for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -123,20 +143,34 @@
         }
         setInterval(drawMatrix, 50);
 
-        // LIVE LOGS GENERATOR
+        // LIVE LOGS
         const consoleLogs = document.getElementById('console-logs');
         const messages = [
-            "[OK] Injected Goroutine #7721...", "[WARN] Proxy Timeout on 185.22.x.x", "[OK] Header Spoofing Active",
-            "[SYSTEM] Encrypting Payload with AES-256", "[OK] Target Responding with 503", "[INFO] Rotating User-Agent: Mozilla/5.0...",
-            "[OK] Socket Stream Established", "[SYSTEM] Load Balancer Bypass Active"
+            "[SYSTEM] Initializing Raw Socket Layer...",
+            "[OK] Goroutine Cluster #774 active",
+            "[INFO] Rotation: UA_Mozilla/5.0_Win10",
+            "[SUCCESS] Target handshake bypass",
+            "[SYSTEM] Encrypting stream AES-256",
+            "[WARN] Latency detected on Proxy_Node_7",
+            "[OK] Packet Injection successful",
+            "[SYSTEM] Bypassing L7 mitigation filters",
+            "[INFO] Heap alloc: 124MB / Goroutines: 4096"
         ];
         function addLog() {
             const line = document.createElement('div');
-            line.innerText = `> ${new Date().toLocaleTimeString()} ${messages[Math.floor(Math.random() * messages.length)]}`;
+            line.className = "mb-1";
+            line.innerHTML = `<span class="text-gray-600">[${new Date().toLocaleTimeString()}]</span> ${messages[Math.floor(Math.random() * messages.length)]}`;
             consoleLogs.appendChild(line);
-            if (consoleLogs.childNodes.length > 12) consoleLogs.removeChild(consoleLogs.firstChild);
+            consoleLogs.scrollTop = consoleLogs.scrollHeight;
+            if (consoleLogs.childNodes.length > 20) consoleLogs.removeChild(consoleLogs.firstChild);
         }
-        setInterval(addLog, 1500);
+        setInterval(addLog, 1200);
+
+        // RE-AJUSTEMENT CANVAS AU RESIZE
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
