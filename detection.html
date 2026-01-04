@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse de Détection | Nebula-X Security</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #050505; color: #a1a1aa; font-family: 'Fira Code', monospace; line-height: 1.7; }
+        .tech-border { border-left: 2px solid #22d3ee; padding-left: 20px; margin-bottom: 30px; }
+        .highlight { color: #22d3ee; font-weight: bold; }
+        .code-block { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 20px; border-radius: 5px; font-size: 0.8rem; color: #4ade80; }
+        h2 { color: #fff; text-transform: uppercase; letter-spacing: 2px; margin-top: 50px; margin-bottom: 20px; }
+    </style>
+</head>
+<body class="p-6 md:p-20">
+
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="text-cyan-500 hover:text-white transition mb-10 inline-block text-sm">? RETOUR AU TERMINAL</a>
+        
+        <header class="mb-20">
+            <h1 class="text-4xl md:text-6xl font-black text-white mb-6 italic">RAPPORT DE DÉTECTION <span class="text-cyan-500">v2.0</span></h1>
+            <div class="flex gap-4 text-xs uppercase tracking-widest">
+                <span class="bg-cyan-500/10 text-cyan-400 px-3 py-1">Document: NX-7721</span>
+                <span class="bg-white/5 px-3 py-1">Classification: Public Audit</span>
+            </div>
+        </header>
+
+        <section class="tech-border">
+            <h2>01. Résumé de l'analyse</h2>
+            <p>
+                Lors de la soumission du binaire <span class="highlight">NebulaX.exe</span> aux moteurs de scan multi-sources (VirusTotal), un ratio de détection de <span class="highlight text-red-500">2/72</span> a été observé. 
+                Ce document détaille les raisons techniques de ces détections et prouve l'absence de code malveillant (Malware-free).
+            </p>
+        </section>
+
+        <section>
+            <h2>02. Architecture des Raw Sockets</h2>
+            <p>
+                Contrairement aux applications standards qui utilisent les bibliothèques système de haut niveau, Nebula-X communique directement avec les <span class="highlight">Raw Sockets</span> de la couche Transport. 
+                Cette méthode est nécessaire pour :
+            </p>
+            <ul class="list-disc ml-6 mt-4 space-y-2 text-sm">
+                <li>La manipulation précise des en-têtes TCP/UDP.</li>
+                <li>Le contournement des limitations de débit imposées par la pile réseau Windows standard.</li>
+                <li>L'injection directe de paquets pour les tests de stress à haute fréquence.</li>
+            </ul>
+            <p class="mt-4">
+                <span class="italic text-yellow-500">Note :</span> Les antivirus comme Bkav Pro utilisent des modèles d'IA qui classent automatiquement l'accès direct aux sockets comme un comportement typique des "Backdoors", créant ainsi un <span class="highlight">Faux Positif</span>.
+            </p>
+        </section>
+
+        <section class="my-20">
+            <h2 class="text-red-400">03. Heuristic & Obfuscation Flags</h2>
+            <p class="mb-6">
+                Le deuxième signalement (Skyhigh SWG) mentionne <code>BehavesLike.Win64.VBObfus</code>. Cette détection est liée aux optimisations de compilation Go :
+            </p>
+            <div class="code-block mb-6">
+                // Commandes de build générant l'alerte :<br>
+                go build -ldflags="-s -w" -o NebulaX.exe<br><br>
+                // Explication :<br>
+                -s : Retire la table des symboles.<br>
+                -w : Retire les informations de debug DWARF.
+            </div>
+            <p>
+                En retirant ces métadonnées pour alléger le binaire, l'entropie du fichier augmente, ce qui trompe les algorithmes d'analyse statique qui pensent que le code est chiffré ou "caché".
+            </p>
+        </section>
+
+        <section>
+            <h2>04. État des Vendeurs Majeurs</h2>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full text-left text-xs border-collapse border border-white/10">
+                    <thead>
+                        <tr class="bg-white/5">
+                            <th class="p-4 border border-white/10">Antivirus</th>
+                            <th class="p-4 border border-white/10">Résultat</th>
+                            <th class="p-4 border border-white/10">Type d'Analyse</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-4 border border-white/10 text-white">Kaspersky</td>
+                            <td class="p-4 border border-white/10 text-green-500 font-bold italic">CLEAN</td>
+                            <td class="p-4 border border-white/10">Signature-based (OK)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 border border-white/10 text-white">Microsoft Defender</td>
+                            <td class="p-4 border border-white/10 text-green-500 font-bold italic">CLEAN</td>
+                            <td class="p-4 border border-white/10">Cloud Sandbox (OK)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 border border-white/10 text-white">Bkav Pro</td>
+                            <td class="p-4 border border-white/10 text-red-400">DETECTED</td>
+                            <td class="p-4 border border-white/10 italic">Heuristic AI (False Positive)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="mt-32 pt-10 border-t border-white/5 text-[10px] opacity-40">
+            Nebula-X Project Lab - Compliance Department - 2026.
+            Toute utilisation doit se faire dans un cadre légal et avec l'autorisation des cibles auditées.
+        </footer>
+    </div>
+
+</body>
+</html>
