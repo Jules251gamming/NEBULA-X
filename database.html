@@ -1,10 +1,48 @@
-<div class="cyber-card p-6 bg-black/80">
-    <div class="flex justify-between border-b border-white/10 pb-2 mb-4">
-        <span class="text-cyan-500 font-bold uppercase text-xs italic">NX-LOGS DATABASE</span>
-        <span id="user-ip-display" class="text-[8px] text-gray-500">IP LOGGED: 12.34.56.78</span>
-    </div>
-    <div class="space-y-2 font-mono text-[9px]">
-        <div class="text-gray-400">[2026-01-05] <span class="text-cyan-500">Blogger96</span> ACCESS GRANTED</div>
-        <div class="text-gray-400">[2026-01-05] <span class="text-red-500">SYSTEM</span> IP_STORED_IN_GITHUB</div>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>NEBULA-X | Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #050505; color: white; font-family: 'Fira Code', monospace; }
+        .cyber-card { background: rgba(20,20,20,0.9); border: 1px solid #22d3ee33; }
+        .neon-border { border-top: 2px solid #22d3ee; }
+    </style>
+</head>
+<body>
+    <nav class="p-5 border-b border-cyan-500/20 bg-black flex justify-between text-[10px] uppercase font-bold tracking-widest relative z-50">
+        <span class="text-cyan-500">NEBULA-X // DB</span>
+        <div class="flex gap-6">
+            <a href="index.html" class="text-gray-500 hover:text-cyan-400">Dashboard</a>
+            <a href="network.html" class="text-gray-500 hover:text-cyan-400">Network</a>
+            <a href="ports.html" class="text-gray-500 hover:text-cyan-400">Ports</a>
+            <a href="database.html" class="text-cyan-400">Database</a>
+            <a href="security.html" class="text-gray-500 hover:text-cyan-400">Security</a>
+        </div>
+    </nav>
+
+    <main class="p-10 flex justify-center mt-10">
+        <div class="cyber-card neon-border p-8 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-cyan-500 font-black uppercase text-xl italic">Log Archive Explorer</h2>
+                <span class="text-[8px] bg-red-500/20 text-red-500 px-2 py-1 rounded">DECRYPTING...</span>
+            </div>
+            <div class="space-y-3 font-mono text-[9px]">
+                <div class="p-3 bg-white/5 border-l-2 border-cyan-500 flex justify-between">
+                    <span>[2026-01-05 18:42] USER: Blogger96 ACCESS GRANTED</span>
+                    <span class="text-gray-500 italic">IP: 82.xxx.xxx.xx</span>
+                </div>
+                <div class="p-3 bg-white/5 border-l-2 border-gray-700 flex justify-between opacity-50">
+                    <span>[2026-01-05 18:30] SYSTEM: LOG_ROTATION COMPLETE</span>
+                    <span class="text-gray-500 italic">SVR: RENDER-NY</span>
+                </div>
+                <div class="p-3 bg-white/5 border-l-2 border-cyan-500 flex justify-between">
+                    <span>[2026-01-05 18:15] AUDIT: target="test_target" SUCCESS</span>
+                    <span class="text-cyan-500 italic">STORED: GITHUB_MASTER</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
