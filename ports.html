@@ -2,59 +2,55 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NEBULA-X | Web Port Scanner</title>
-    <link rel="stylesheet" href="style.css">
+    <title>NEBULA-X | Port Scanner</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #050505; color: white; font-family: 'Fira Code', monospace; }
+        .cyber-card { background: rgba(20,20,20,0.9); border: 1px solid #22d3ee33; }
+        .neon-border { border-top: 2px solid #22d3ee; }
+        .btn-cyber { border: 1px solid #22d3ee; color: #22d3ee; padding: 12px; font-size: 10px; font-weight: bold; transition: 0.3s; }
+        .btn-cyber:hover { background: #22d3ee; color: black; }
+    </style>
 </head>
 <body>
-    <canvas id="matrix" class="matrix-canvas"></canvas>
-
-    <nav class="p-5 border-b border-cyan-500/30 bg-black/90 relative z-10">
-        <div class="max-w-7xl mx-auto flex justify-between text-[10px] tracking-widest uppercase">
-            <a href="index.html" class="text-gray-500">Dashboard</a>
-            <a href="ports.html" class="text-cyan-400 font-bold">Port Scan</a>
-            <a href="network.html" class="text-gray-500">Network</a>
-            <a href="database.html" class="text-gray-500">Database</a>
-            <a href="security.html" class="text-gray-500">Security</a>
+    <nav class="p-5 border-b border-cyan-500/20 bg-black flex justify-between text-[10px] uppercase font-bold tracking-widest relative z-50">
+        <span class="text-cyan-500">NEBULA-X // SCANNER</span>
+        <div class="flex gap-6">
+            <a href="index.html" class="text-gray-500 hover:text-cyan-400">Dashboard</a>
+            <a href="network.html" class="text-gray-500 hover:text-cyan-400">Network</a>
+            <a href="ports.html" class="text-cyan-400">Ports</a>
+            <a href="database.html" class="text-gray-500 hover:text-cyan-400">Database</a>
+            <a href="security.html" class="text-gray-500 hover:text-cyan-400">Security</a>
         </div>
     </nav>
 
-    <main class="relative z-10 max-w-4xl mx-auto mt-20 p-6">
-        <div class="cyber-card p-8 border-t-4 border-cyan-500">
-            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase italic">Port Discovery Tool</h2>
-            
-            <div class="flex gap-4 mb-8">
-                <input type="text" id="scan-target" placeholder="IP ou DOMAINE CIBLE" class="flex-grow bg-black border border-white/10 p-4 text-cyan-400 outline-none">
-                <button onclick="runPortScan()" class="btn-cyber">Lancer le Scan</button>
+    <main class="p-10 flex justify-center mt-10">
+        <div class="cyber-card neon-border p-8 w-full max-w-xl">
+            <h2 class="text-cyan-500 font-black mb-6 uppercase italic text-xl">Advanced Port Discovery</h2>
+            <div class="flex gap-2 mb-6">
+                <input type="text" id="target" placeholder="IP CIBLE" class="flex-grow bg-black border border-white/10 p-3 text-cyan-400 outline-none focus:border-cyan-500 text-xs">
+                <button onclick="startScan()" class="btn-cyber">SCAN</button>
             </div>
-
-            <div id="scan-console" class="bg-black/80 h-64 p-4 font-mono text-[10px] overflow-y-auto border border-white/5">
-                <div class="text-gray-600">> Prêt pour l'analyse réseau...</div>
+            <div id="out" class="bg-black/50 p-4 h-64 font-mono text-[9px] overflow-y-auto border border-white/5 space-y-1">
+                <div class="text-gray-600">> En attente de cible...</div>
             </div>
         </div>
     </main>
 
     <script>
-        async function runPortScan() {
-            const target = document.getElementById('scan-target').value;
-            const console = document.getElementById('scan-console');
+        function startScan() {
+            const out = document.getElementById('out');
+            const target = document.getElementById('target').value;
             if(!target) return;
-
-            console.innerHTML = `<div class="text-cyan-500">> Initialisation du scan sur ${target}...</div>`;
-            
-            // Simulation visuelle de scan ultra-rapide
-            const commonPorts = [21, 22, 23, 25, 53, 80, 110, 443, 3306, 8080];
-            
-            for(let port of commonPorts) {
-                await new Promise(r => setTimeout(r, 200));
-                const status = Math.random() > 0.8 ? 
-                    '<span class="text-green-500">OPEN</span>' : 
-                    '<span class="text-red-500">CLOSED</span>';
-                console.innerHTML += `<div>Port ${port} : ${status}</div>`;
-                console.scrollTop = console.scrollHeight;
-            }
-            
-            console.innerHTML += `<div class="mt-4 text-cyan-500 font-bold">--- SCAN TERMINÉ ---</div>`;
+            out.innerHTML = `<div class="text-cyan-500 font-bold">> SCANNING ${target}...</div>`;
+            const ports = [21, 22, 23, 25, 53, 80, 110, 443, 3306, 8080];
+            ports.forEach((p, i) => {
+                setTimeout(() => {
+                    const status = Math.random() > 0.8 ? '<span class="text-green-500 font-bold">OPEN</span>' : '<span class="text-red-500">CLOSED</span>';
+                    out.innerHTML += `<div>Node ${target} : Port ${p} -> ${status}</div>`;
+                    out.scrollTop = out.scrollHeight;
+                }, i * 300);
+            });
         }
     </script>
 </body>
