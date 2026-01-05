@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEBULA-X | Elite Network Auditing</title>
+    <title>NEBULA-X | Central Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
@@ -12,113 +12,162 @@
         .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: 0; pointer-events: none; }
         .cyber-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
         .neon-text { text-shadow: 0 0 10px var(--cyan-neon); color: var(--cyan-neon); }
-        body.modal-open { overflow: hidden; }
-        .welcome-popup { animation: slideDown 0.5s ease-out, bounce 2s infinite 0.5s; }
-        @keyframes slideDown { from { transform: translate(-50%, -100%); } to { transform: translate(-50%, 0); } }
-        @keyframes bounce { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
+        .nav-link { transition: all 0.3s; border-bottom: 1px solid transparent; }
+        .nav-link:hover { color: var(--cyan-neon); border-bottom: 1px solid var(--cyan-neon); }
+        
+        .welcome-popup { 
+            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translate(-50%, -150%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
     </style>
 </head>
-<body class="modal-open">
+<body class="overflow-hidden">
+
     <canvas id="matrix" class="matrix-bg"></canvas>
 
-    <div id="legal-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/98 backdrop-blur-xl px-4">
-        <div class="max-w-lg w-full cyber-card p-8 border-cyan-500/50 text-center shadow-[0_0_50px_rgba(34,211,238,0.2)]">
-            <h2 class="text-2xl font-black italic text-cyan-500 mb-6 uppercase">Accès Sécurisé</h2>
-            <p class="text-gray-400 text-[10px] mb-8 leading-relaxed italic">
-                En continuant, vous acceptez l'enregistrement de votre empreinte numérique (IP) dans les logs de sécurité NEBULA-X.
-            </p>
-            <button onclick="acceptTerms()" class="w-full py-4 bg-cyan-500 text-black font-black uppercase text-[10px] hover:bg-white transition-all">J'ACCEPTE</button>
+    <nav class="relative z-[150] w-full bg-black/90 border-b border-cyan-500/20 p-5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em]">
+            <div class="neon-text font-black text-sm">NEBULA-X</div>
+            <div class="flex gap-8">
+                <a href="index.html" class="text-cyan-400">Dashboard</a>
+                <a href="network.html" class="nav-link text-gray-500">Network</a>
+                <a href="ports.html" class="nav-link text-gray-500">Port Scan</a>
+                <a href="database.html" class="nav-link text-gray-500">Database</a>
+                <a href="security.html" class="nav-link text-gray-500">Security</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="legal-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-md">
+        <div class="max-w-md w-full cyber-card p-10 border-cyan-500/30 text-center">
+            <div class="mb-6 inline-block p-4 rounded-full border border-cyan-500/20">
+                <svg class="w-8 h-8 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002-2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <h2 class="text-xl font-bold text-white mb-4 uppercase tracking-tighter">Initialisation du Node</h2>
+            <p class="text-[9px] text-gray-400 mb-8 leading-relaxed uppercase">En cliquant, vous autorisez le système à indexer votre IP dans les registres sécurisés de NEBULA-X (GitHub Logs).</p>
+            <button onclick="initSystem()" class="w-full py-4 bg-cyan-500 text-black font-black text-[10px] tracking-widest hover:bg-white transition-all">ACCÉDER AU TERMINAL</button>
         </div>
     </div>
 
-    <section class="relative z-10 min-h-screen flex flex-col items-center justify-center p-6">
-        <h1 class="text-6xl md:text-8xl font-black italic neon-text mb-12 tracking-tighter">NEBULA<span class="text-white">-X</span></h1>
-        
-        <div class="max-w-5xl w-full grid md:grid-cols-3 gap-6">
-            <div class="cyber-card p-6 border-t-2 border-cyan-500/50">
-                <label class="block text-[8px] text-gray-500 mb-2 uppercase font-bold italic">Cible de l'audit</label>
-                <input type="text" id="target" placeholder="google.com" class="w-full bg-black border border-white/10 p-3 rounded text-cyan-400 text-xs outline-none mb-4 focus:border-cyan-500 transition-all">
-                <button id="btn-test" onclick="runRealAudit()" class="w-full py-3 bg-cyan-500 text-black font-black text-[10px] uppercase hover:bg-white transition-all">INITIALISER L'AUDIT</button>
-                
-                <div class="mt-6 pt-4 border-t border-white/5">
-                    <p class="text-[7px] text-gray-400 uppercase font-bold italic">Identification Source :</p>
-                    <div id="user-ip" class="text-[10px] font-mono text-cyan-500 font-bold">Détection...</div>
-                    <p class="text-[6px] text-red-500/70 uppercase mt-1 font-black">LOGGING: ACTIF (GitHub)</p>
+    <main class="relative z-10 pt-12 px-6 flex flex-col items-center">
+        <div class="w-full max-w-6xl grid lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-4 space-y-6">
+                <div class="cyber-card p-6 border-t-2 border-cyan-500">
+                    <h3 class="text-[10px] font-bold text-cyan-500 mb-4 uppercase italic">Session Status</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[9px] text-gray-500 uppercase">User Identity</span>
+                            <span class="text-[10px] text-white font-bold">Blogger96</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[9px] text-gray-500 uppercase">Source IP</span>
+                            <span id="ip-display" class="text-[10px] text-cyan-400 font-mono italic animate-pulse">Scanning...</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[9px] text-gray-500 uppercase">Log Auth</span>
+                            <span class="text-[9px] text-green-500 font-black">GITHUB_LINK_OK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cyber-card p-6">
+                    <h3 class="text-[10px] font-bold text-gray-400 mb-4 uppercase italic">Command Input</h3>
+                    <input type="text" id="target" placeholder="TARGET_DOMAIN_OR_IP" class="w-full bg-black/50 border border-white/10 p-3 rounded text-[10px] text-cyan-400 outline-none focus:border-cyan-500 mb-4">
+                    <button id="exec-btn" onclick="startAudit()" class="w-full py-3 bg-white/5 border border-white/10 text-white font-black text-[9px] uppercase hover:bg-cyan-500 hover:text-black transition-all">Execute Scan</button>
                 </div>
             </div>
 
-            <div class="md:col-span-2 cyber-card bg-black/90 rounded border border-cyan-500/20 overflow-hidden shadow-2xl">
-                <div class="bg-white/5 px-4 py-2 border-b border-white/5 text-[8px] text-cyan-500 italic">NODE: Jules251-Secure</div>
-                <div id="terminal-output" class="p-4 h-64 overflow-y-auto font-mono text-[10px] space-y-1">
-                    <div class="text-gray-600">> Système prêt. En attente d'instruction...</div>
+            <div class="lg:col-span-8">
+                <div class="cyber-card bg-black/60 rounded-lg border border-white/5 h-[450px] flex flex-col shadow-2xl">
+                    <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-white/5">
+                        <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+                        <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
+                        <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                        <span class="ml-4 text-[9px] text-gray-500 uppercase font-bold tracking-widest">NX_CONSOLE_V1.0</span>
+                    </div>
+                    <div id="console" class="p-6 overflow-y-auto font-mono text-[10px] space-y-2 flex-grow">
+                        <div class="text-gray-500">> SYSTEM INITIALIZED. WAITING FOR COMMAND...</div>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </section>
+    </main>
 
     <script>
-        // Matrix Effect
-        const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
-        canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-        const drops=Array(Math.floor(canvas.width/14)).fill(1);
-        function draw(){
-            ctx.fillStyle="rgba(1,1,1,0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle="#22d3ee"; ctx.font="14px monospace";
-            drops.forEach((y,i)=>{
-                const t="01"[Math.floor(Math.random()*2)]; ctx.fillText(t,i*14,y*14);
-                if(y*14>canvas.height && Math.random()>0.975) drops[i]=0; drops[i]++;
+        // Matrix Background Logic
+        const canvas = document.getElementById('matrix'), ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const columns = Math.floor(canvas.width / 20);
+        const drops = Array(columns).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(1, 1, 1, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#22d3ee'; ctx.font = '15px monospace';
+            drops.forEach((y, i) => {
+                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                ctx.fillText(text, i * 20, y * 20);
+                if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
             });
         }
-        setInterval(draw, 50);
+        setInterval(drawMatrix, 50);
 
-        // Récupération IP réelle
-        async function fetchIP(){
+        // IP Tracking
+        async function getIP() {
             try {
-                const r = await fetch('https://api.ipify.org?format=json');
-                const d = await r.json();
-                document.getElementById('user-ip').innerText = d.ip;
-                return d.ip;
-            } catch(e) { return "127.0.0.1"; }
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                document.getElementById('ip-display').innerText = data.ip;
+                return data.ip;
+            } catch (e) { return "ERROR_DETECTING_IP"; }
         }
-        fetchIP();
+        getIP();
 
-        // Pop-up Blogger96
-        function acceptTerms() {
+        // Welcome Blogger96
+        function initSystem() {
             document.getElementById('legal-modal').style.display = 'none';
-            document.body.classList.remove('modal-open');
-            const p = document.createElement('div');
-            p.className = "fixed top-10 left-1/2 -translate-x-1/2 z-[300] welcome-popup cyber-card border-cyan-500 bg-black/95 p-6 text-center shadow-2xl min-w-[300px]";
-            p.innerHTML = `<span class="text-cyan-500 font-black italic text-xl uppercase tracking-tighter">BIENVENUE, Blogger96</span><p class="text-[8px] text-gray-500 mt-1">ACCÈS ADMINISTRATEUR CONFIRMÉ</p>`;
-            document.body.appendChild(p);
-            setTimeout(() => { p.style.opacity='0'; p.style.transition='1.5s'; setTimeout(()=>p.remove(),1500); }, 3500);
+            document.body.classList.remove('overflow-hidden');
+
+            const pop = document.createElement('div');
+            pop.className = "fixed top-8 left-1/2 -translate-x-1/2 z-[300] welcome-popup cyber-card border-cyan-500 bg-black/95 p-6 text-center shadow-[0_0_50px_rgba(34,211,238,0.4)] min-w-[350px]";
+            pop.innerHTML = `
+                <div class="text-cyan-500 font-black italic text-2xl uppercase tracking-tighter mb-1">Welcome, Blogger96</div>
+                <div class="text-[8px] text-gray-500 uppercase tracking-widest font-bold border-t border-white/10 pt-2">Authorization: Level-7 Master Administrator</div>
+            `;
+            document.body.appendChild(pop);
+            setTimeout(() => { pop.style.opacity='0'; pop.style.transition='1s'; setTimeout(()=>pop.remove(), 1000); }, 4000);
         }
 
-        // Audit & GitHub Logging
-        async function runRealAudit() {
+        // Audit & GitHub Log API Call
+        async function startAudit() {
             const target = document.getElementById('target').value;
-            const output = document.getElementById('terminal-output');
-            const btn = document.getElementById('btn-test');
+            const consoleBox = document.getElementById('console');
+            const ip = document.getElementById('ip-display').innerText;
+
             if(!target) return;
 
-            btn.disabled = true;
-            output.innerHTML = `<div class="text-yellow-500 animate-pulse">> [SECURITY] Synchronisation avec GitHub logs...</div>`;
-            
-            const currentIp = document.getElementById('user-ip').innerText;
+            consoleBox.innerHTML += `<div class="text-cyan-500">> [CMD]: audit --target ${target}</div>`;
+            consoleBox.innerHTML += `<div class="text-yellow-500 animate-pulse">> [SYSTEM]: Synchronisation GitHub Logs en cours...</div>`;
 
             try {
-                // Envoi vers ton API Render qui gère le Token GitHub
-                const r = await fetch('https://nebula-x-8zga.onrender.com/api/diagnostic', {
+                const response = await fetch('/api/diagnostic', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ target: target, userIp: currentIp })
+                    body: JSON.stringify({ target: target, userIp: ip })
                 });
-                const d = await r.json();
-                
-                output.innerHTML += `<div class="text-green-400">> [SUCCESS] Empreinte ${currentIp} archivée.</div>`;
-                output.innerHTML += `<div class="text-cyan-400">> [RESULT] Diagnostic cible ${target} : OK (${d.latency || '18ms'})</div>`;
-            } catch(e) {
-                output.innerHTML += `<div class="text-red-500">> [ERROR] Échec de la liaison Master Node.</div>`;
-            } finally { btn.disabled = false; }
+
+                if(response.ok) {
+                    consoleBox.innerHTML += `<div class="text-green-500">> [LOG]: IP ${ip} archivée avec succès dans Jules251gamming/NEBULA-X/logs.txt</div>`;
+                    consoleBox.innerHTML += `<div class="text-white">> [RESULT]: Audit cible ${target} complété. (Détails en page Database)</div>`;
+                }
+            } catch (err) {
+                consoleBox.innerHTML += `<div class="text-red-500">> [ERR]: Liaison API Render / GitHub interrompue.</div>`;
+            }
+            consoleBox.scrollTop = consoleBox.scrollHeight;
         }
     </script>
 </body>
