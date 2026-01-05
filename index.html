@@ -2,35 +2,85 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NEBULA-X | Port Scan</title>
+    <title>NEBULA-X | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #050505; color: white; font-family: 'Fira Code', monospace; }
-        .cyber-card { background: rgba(20,20,20,0.9); border: 1px solid #22d3ee33; }
-        .neon-border { border-top: 2px solid #22d3ee; }
-        .btn-cyber { border: 1px solid #22d3ee; color: #22d3ee; padding: 10px; font-size: 10px; }
-        .btn-cyber:hover { background: #22d3ee; color: black; }
+        body { background: #050505; color: white; font-family: 'Fira Code', monospace; overflow-x: hidden; }
+        .cyber-card { background: rgba(20,20,20,0.9); border: 1px solid #22d3ee33; backdrop-filter: blur(10px); }
+        .neon-border { border-top: 2px solid #22d3ee; box-shadow: 0 -5px 15px -5px #22d3ee; }
+        .btn-cyber { border: 1px solid #22d3ee; color: #22d3ee; transition: 0.3s; text-transform: uppercase; font-size: 10px; padding: 12px; font-weight: bold; }
+        .btn-cyber:hover { background: #22d3ee; color: black; box-shadow: 0 0 15px #22d3ee; }
+        .welcome-popup { animation: slideIn 0.5s ease-out forwards; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 500; }
+        @keyframes slideIn { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
     </style>
 </head>
 <body>
-    <main class="p-10 flex justify-center">
-        <div class="cyber-card neon-border p-8 w-full max-w-xl text-center">
-            <h2 class="text-cyan-500 font-black mb-6 uppercase">Port Scanner Tool</h2>
-            <input type="text" id="target" placeholder="IP CIBLE" class="w-full bg-black border border-white/10 p-3 text-cyan-400 mb-4 outline-none">
-            <button onclick="scan()" class="btn-cyber w-full">Scanner les ports</button>
-            <div id="out" class="mt-6 text-[9px] font-mono text-left space-y-1 h-40 overflow-auto"></div>
+    <nav class="p-5 border-b border-cyan-500/20 bg-black flex justify-between text-[10px] uppercase font-bold tracking-widest relative z-50">
+        <span class="text-cyan-500">NEBULA-X // ADMIN</span>
+        <div class="flex gap-6">
+            <a href="index.html" class="text-cyan-400">Dashboard</a>
+            <a href="network.html" class="text-gray-500 hover:text-cyan-400">Network</a>
+            <a href="ports.html" class="text-gray-500 hover:text-cyan-400">Ports</a>
+            <a href="database.html" class="text-gray-500 hover:text-cyan-400">Database</a>
+            <a href="security.html" class="text-gray-500 hover:text-cyan-400">Security</a>
+        </div>
+    </nav>
+
+    <div id="modal" class="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center">
+        <div class="cyber-card p-10 text-center max-w-sm border-cyan-500/50">
+            <h2 class="text-cyan-500 font-black mb-4 uppercase text-xl">Accès Restreint</h2>
+            <p class="text-[9px] text-gray-500 mb-8 leading-loose">INITIALISATION DU TRACAGE IP POUR LE COMPTE :<br><span class="text-white font-bold">BLOGGER96</span></p>
+            <button onclick="login()" class="btn-cyber w-full">AUTORISER L'ACCÈS</button>
+        </div>
+    </div>
+
+    <main class="p-10 flex flex-col items-center mt-10">
+        <div class="cyber-card neon-border p-8 w-full max-w-2xl">
+            <h1 class="text-4xl font-black italic text-cyan-500 mb-6 uppercase tracking-tighter">System Overview</h1>
+            <div class="grid grid-cols-2 gap-6 text-[10px] uppercase">
+                <div class="p-4 bg-white/5 border border-white/5">
+                    <p class="text-gray-500 mb-1">Detected IP</p>
+                    <span id="ip" class="text-cyan-500 italic font-bold">SCANNING...</span>
+                </div>
+                <div class="p-4 bg-white/5 border border-white/5">
+                    <p class="text-gray-500 mb-1">Operator</p>
+                    <span class="text-white font-bold">Blogger96</span>
+                </div>
+            </div>
+            <div class="mt-8">
+                <input type="text" id="target" placeholder="TARGET HOST (ex: google.com)" class="w-full bg-black border border-white/10 p-4 text-cyan-400 text-xs mb-4 outline-none focus:border-cyan-500">
+                <button onclick="sendToLog()" class="btn-cyber w-full">Lancer l'audit de sécurité</button>
+            </div>
         </div>
     </main>
+
     <script>
-        function scan() {
-            const out = document.getElementById('out');
-            out.innerHTML = "<div class='text-yellow-500'>Lancement du scan...</div>";
-            [21, 22, 80, 443, 3306].forEach((p, i) => {
-                setTimeout(() => {
-                    out.innerHTML += `<div>Port ${p}: <span class='text-green-500'>OPEN</span></div>`;
-                }, i * 500);
-            });
+        async function getIP() {
+            const r = await fetch('https://api.ipify.org?format=json');
+            const d = await r.json();
+            document.getElementById('ip').innerText = d.ip;
+            return d.ip;
         }
+        function login() {
+            document.getElementById('modal').style.display = 'none';
+            const p = document.createElement('div');
+            p.className = "welcome-popup cyber-card p-6 border-cyan-500 text-center shadow-[0_0_30px_#22d3ee55]";
+            p.innerHTML = "<h2 class='text-cyan-500 font-black text-xl italic tracking-tighter'>BIENVENUE BLOGGER96</h2><p class='text-[8px] text-gray-500 uppercase mt-1'>Session sécurisée activée</p>";
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 4000);
+        }
+        async function sendToLog() {
+            const target = document.getElementById('target').value;
+            const ip = document.getElementById('ip').innerText;
+            if(!target) return;
+            await fetch('/api/diagnostic', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ target: target, userIp: ip })
+            });
+            alert("Trace envoyée sur GitHub avec succès.");
+        }
+        getIP();
     </script>
 </body>
 </html>
