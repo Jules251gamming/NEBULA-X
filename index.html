@@ -2,85 +2,139 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NEBULA-X | Dashboard</title>
+    <title>NEBULA-X | Heavy Console</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #050505; color: white; font-family: 'Fira Code', monospace; overflow-x: hidden; }
-        .cyber-card { background: rgba(20,20,20,0.9); border: 1px solid #22d3ee33; backdrop-filter: blur(10px); }
-        .neon-border { border-top: 2px solid #22d3ee; box-shadow: 0 -5px 15px -5px #22d3ee; }
-        .btn-cyber { border: 1px solid #22d3ee; color: #22d3ee; transition: 0.3s; text-transform: uppercase; font-size: 10px; padding: 12px; font-weight: bold; }
-        .btn-cyber:hover { background: #22d3ee; color: black; box-shadow: 0 0 15px #22d3ee; }
-        .welcome-popup { animation: slideIn 0.5s ease-out forwards; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 500; }
-        @keyframes slideIn { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
+        :root {
+            --neon: #22d3ee;
+            --heavy-bg: #020202;
+            --glass: rgba(10, 10, 10, 0.85);
+        }
+        body { background: var(--heavy-bg); color: #fff; font-family: 'Fira Code', monospace; perspective: 1000px; }
+        
+        /* Effet de profondeur 3D sur les cartes */
+        .heavy-card {
+            background: var(--glass);
+            border: 2px solid rgba(34, 211, 238, 0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(34, 211, 238, 0.05);
+            transform: rotateX(5deg);
+            transition: 0.5s;
+        }
+        .heavy-card:hover { transform: rotateX(0deg) scale(1.02); border-color: var(--neon); }
+
+        /* Bordure animée "Chargement" */
+        .neon-scan {
+            position: relative; overflow: hidden;
+        }
+        .neon-scan::after {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--neon));
+            animation: rotate 4s linear infinite; z-index: -1;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .btn-heavy {
+            background: linear-gradient(45deg, #111, #22d3ee22);
+            border: 1px solid var(--neon);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-heavy:hover { box-shadow: 0 0 30px var(--neon); filter: brightness(1.2); }
     </style>
 </head>
-<body>
-    <nav class="p-5 border-b border-cyan-500/20 bg-black flex justify-between text-[10px] uppercase font-bold tracking-widest relative z-50">
-        <span class="text-cyan-500">NEBULA-X // ADMIN</span>
-        <div class="flex gap-6">
-            <a href="index.html" class="text-cyan-400">Dashboard</a>
-            <a href="network.html" class="text-gray-500 hover:text-cyan-400">Network</a>
-            <a href="ports.html" class="text-gray-500 hover:text-cyan-400">Ports</a>
-            <a href="database.html" class="text-gray-500 hover:text-cyan-400">Database</a>
-            <a href="security.html" class="text-gray-500 hover:text-cyan-400">Security</a>
+<body class="p-0 m-0 overflow-hidden bg-grid">
+
+    <nav class="relative z-[100] w-full border-b-4 border-cyan-500/40 bg-black py-4 px-10 flex justify-between items-center shadow-[0_10px_30px_rgba(0,0,0,1)]">
+        <div class="text-2xl font-black italic text-cyan-500 tracking-tighter">NEBULA-X <span class="text-[8px] border p-1 ml-2">V.4.0_HEAVY</span></div>
+        <div class="flex gap-10 text-[10px] font-black uppercase tracking-[0.3em]">
+            <a href="index.html" class="text-cyan-400 border-b-2 border-cyan-400">Main_Console</a>
+            <a href="network.html" class="text-gray-600 hover:text-white transition">Satellite_Map</a>
+            <a href="ports.html" class="text-gray-600 hover:text-white transition">Port_Striker</a>
+            <a href="database.html" class="text-gray-600 hover:text-white transition">Nexus_Logs</a>
         </div>
     </nav>
 
-    <div id="modal" class="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center">
-        <div class="cyber-card p-10 text-center max-w-sm border-cyan-500/50">
-            <h2 class="text-cyan-500 font-black mb-4 uppercase text-xl">Accès Restreint</h2>
-            <p class="text-[9px] text-gray-500 mb-8 leading-loose">INITIALISATION DU TRACAGE IP POUR LE COMPTE :<br><span class="text-white font-bold">BLOGGER96</span></p>
-            <button onclick="login()" class="btn-cyber w-full">AUTORISER L'ACCÈS</button>
+    <div id="auth-gate" class="fixed inset-0 z-[1000] bg-black/98 flex items-center justify-center">
+        <div class="heavy-card p-12 text-center border-t-8 border-cyan-500 max-w-lg">
+            <h2 class="text-4xl font-black italic text-white mb-2">IDENTIFICATION</h2>
+            <div class="w-full h-1 bg-white/10 my-6 relative"><div class="absolute h-full bg-cyan-500 w-1/2 animate-pulse"></div></div>
+            <p class="text-cyan-500/50 text-[10px] mb-8 tracking-[0.5em]">SYSTEM_KEY: BLOGGER96_LOGGED</p>
+            <button onclick="unlock()" class="btn-heavy w-full py-5 text-[12px] font-black">ACTIVER LE NOYAU</button>
         </div>
     </div>
 
-    <main class="p-10 flex flex-col items-center mt-10">
-        <div class="cyber-card neon-border p-8 w-full max-w-2xl">
-            <h1 class="text-4xl font-black italic text-cyan-500 mb-6 uppercase tracking-tighter">System Overview</h1>
-            <div class="grid grid-cols-2 gap-6 text-[10px] uppercase">
-                <div class="p-4 bg-white/5 border border-white/5">
-                    <p class="text-gray-500 mb-1">Detected IP</p>
-                    <span id="ip" class="text-cyan-500 italic font-bold">SCANNING...</span>
-                </div>
-                <div class="p-4 bg-white/5 border border-white/5">
-                    <p class="text-gray-500 mb-1">Operator</p>
-                    <span class="text-white font-bold">Blogger96</span>
+    <main class="grid grid-cols-12 gap-8 p-10 h-screen">
+        
+        <div class="col-span-4 space-y-8">
+            <div class="heavy-card p-6 border-l-4 border-cyan-500">
+                <h3 class="text-xs font-black mb-4 text-cyan-500 uppercase tracking-widest italic">Source_Intel</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between bg-black/50 p-2 border border-white/5">
+                        <span class="text-[9px] text-gray-500 uppercase">IP_V4</span>
+                        <span id="ip" class="text-xs font-bold text-cyan-400">---.---.---.---</span>
+                    </div>
+                    <div class="flex justify-between bg-black/50 p-2 border border-white/5">
+                        <span class="text-[9px] text-gray-500 uppercase">Status</span>
+                        <span class="text-[9px] text-green-500 font-black animate-pulse">ENCRYPTION_ACTIVE</span>
+                    </div>
                 </div>
             </div>
-            <div class="mt-8">
-                <input type="text" id="target" placeholder="TARGET HOST (ex: google.com)" class="w-full bg-black border border-white/10 p-4 text-cyan-400 text-xs mb-4 outline-none focus:border-cyan-500">
-                <button onclick="sendToLog()" class="btn-cyber w-full">Lancer l'audit de sécurité</button>
+
+            <div class="heavy-card p-6 neon-scan">
+                <h3 class="text-xs font-black mb-4 text-white uppercase italic">Command_Launcher</h3>
+                <input type="text" id="target" placeholder="TARGET_DOMAIN" class="w-full bg-black/80 border-b-2 border-cyan-500 p-4 text-cyan-400 font-bold mb-4 outline-none">
+                <button onclick="runHeavyAudit()" class="btn-heavy w-full py-4 text-[10px] font-black">INITIALISER L'ASSAUT</button>
+            </div>
+        </div>
+
+        <div class="col-span-8">
+            <div class="heavy-card h-full flex flex-col bg-black/90">
+                <div class="bg-cyan-500/10 p-3 flex justify-between items-center border-b border-cyan-500/30">
+                    <span class="text-[10px] font-black text-cyan-500 italic uppercase">Global_Live_Terminal</span>
+                    <div class="flex gap-2">
+                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                        <div class="w-2 h-2 rounded-full bg-cyan-500"></div>
+                    </div>
+                </div>
+                <div id="console" class="flex-grow p-6 font-mono text-[11px] overflow-y-auto space-y-2 leading-relaxed">
+                    <div class="text-gray-600 font-black tracking-widest">>> WAITING FOR INPUT...</div>
+                </div>
             </div>
         </div>
     </main>
 
     <script>
-        async function getIP() {
-            const r = await fetch('https://api.ipify.org?format=json');
-            const d = await r.json();
-            document.getElementById('ip').innerText = d.ip;
-            return d.ip;
+        // Detection IP
+        fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>document.getElementById('ip').innerText = d.ip);
+
+        function unlock() {
+            document.getElementById('auth-gate').style.display = 'none';
         }
-        function login() {
-            document.getElementById('modal').style.display = 'none';
-            const p = document.createElement('div');
-            p.className = "welcome-popup cyber-card p-6 border-cyan-500 text-center shadow-[0_0_30px_#22d3ee55]";
-            p.innerHTML = "<h2 class='text-cyan-500 font-black text-xl italic tracking-tighter'>BIENVENUE BLOGGER96</h2><p class='text-[8px] text-gray-500 uppercase mt-1'>Session sécurisée activée</p>";
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 4000);
-        }
-        async function sendToLog() {
+
+        async function runHeavyAudit() {
             const target = document.getElementById('target').value;
+            const con = document.getElementById('console');
             const ip = document.getElementById('ip').innerText;
             if(!target) return;
-            await fetch('/api/diagnostic', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ target: target, userIp: ip })
-            });
-            alert("Trace envoyée sur GitHub avec succès.");
+
+            con.innerHTML += `<div class="text-cyan-500 font-black">> INITIATING DEEP SCAN ON ${target}...</div>`;
+            con.innerHTML += `<div class="text-gray-500">> LINKING GITHUB MASTER LOGS [Jules251gamming]...</div>`;
+
+            // Envoi réel vers ton serveur Render (GitHub Log)
+            try {
+                const res = await fetch('/api/diagnostic', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ target: target, userIp: ip })
+                });
+                if(res.ok) {
+                    con.innerHTML += `<div class="text-green-500 font-black">> [SUCCESS] PACKET_RECORD_ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()} SENT TO GITHUB.</div>`;
+                }
+            } catch(e) {
+                con.innerHTML += `<div class="text-red-500 font-black">> ERROR: CONNECTION_TIMEOUT</div>`;
+            }
+            con.scrollTop = con.scrollHeight;
         }
-        getIP();
     </script>
 </body>
 </html>
