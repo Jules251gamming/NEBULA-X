@@ -1,0 +1,8 @@
+{
+  "username": "GUEST_NODE",
+  "stealth_mode": false,
+  "ddos_multiplier": 1,
+  "scan_speed": 0.05,
+  "kill_switch": false,
+  "theme_color": "RED"
+}
